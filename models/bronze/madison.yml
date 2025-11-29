@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: arcgis
+    tables:
+      - name: madison_parcels
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/parcels/**/*.parquet"
+      - name: madison_streets
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/streets/**/*.parquet"
+      - name: impervious_surfaces
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/impervious_surfaces/**/*.parquet"
+      - name: madison_alder_districts
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/alder_district_overlays/**/*.parquet"
+      - name: madison_area_plans
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/area_plan_overlays/**/*.parquet"
+      - name: madison_tod_overlay
+        config:
+          external_location: "gs://stmsn-bronze/arcgis/madison/tod_overlays/**/*.parquet"
