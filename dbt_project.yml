@@ -25,6 +25,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   stmsn_dbt:
+    staging:
+      +materialized: view
     silver:
       +materialized: external
       +format: parquet
