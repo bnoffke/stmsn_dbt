@@ -21,12 +21,9 @@ sources:
       - name: madison_tod_overlay
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/tod_overlays/**/*.parquet"
+  - name: webfiles
+    tables:
       - name: madison_tax_roll
         config:
-          external_location: "gs://stmsn-bronze/arcgis/madison/tax_roll/**/*.parquet"
-  - name: legacy
-    tables:
-      - name: madison_tax_roll_legacy
-        config:
-          external_location: "read_parquet('gs://stmsn-bronze/legacy/madison-tax-roll/*.parquet', union_by_name=True)"
+          external_location: "read_parquet('gs://stmsn-bronze/webfiles/madison/tax_roll/**/*.parquet', union_by_name=True)"
           formatter: oldstyle
