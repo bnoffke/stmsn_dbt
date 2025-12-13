@@ -61,6 +61,7 @@ agg_cte as (
 )
 
 select *,
+    ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom_4326, 0.00001)) geom_4326_geojson,
     net_taxes / nullif(current_total_value, 0) as tax_rate,
     net_taxes / nullif(lot_size, 0) as net_taxes_per_sqft_lot,
     current_land_value / nullif(lot_size, 0) as land_value_per_sqft_lot,
