@@ -9,7 +9,7 @@ with
 agg_cte as (
 
     select 
-        x_ref_parcel as parcel_id,
+        site_parcel_id,
         parcel_year,
 
         mode(property_class) as property_class,
@@ -18,11 +18,10 @@ agg_cte as (
         mode(lot_type_1) as lot_type_1,
         mode(lot_type_2) as lot_type_2,
         mode(zoning_all) as zoning_all,
-        mode(neighborhood_primary) as neighborhood_primary,
         ward,
         alder_district,
         geom,
-        max(case when parcel_id = x_ref_parcel then parcel_address end) as parcel_address,
+        max(case when parcel_id = site_parcel_id then parcel_address end) as parcel_address,
         sum(bedrooms) as bedrooms,
         sum(full_baths) as full_baths,
         sum(half_baths) as half_baths,
@@ -47,9 +46,12 @@ agg_cte as (
         sum(total_dwelling_units) as total_dwelling_units
     from {{ ref('fact_parcels') }} parcels
     group by 
-        x_ref_parcel,
+        site_parcel_id,
         parcel_year,
         ward,
         alder_district,
         geom
 )
+
+select *
+from agg_cte

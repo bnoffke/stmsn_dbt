@@ -7,7 +7,7 @@
 select
     objectid as obj_id,
     parcel as parcel_id,
-    x_ref_parcel,
+    x_ref_parcel as site_parcel_id,
     address as parcel_address,
     epoch_ms(CAST(date_parcel_changed AS BIGINT)) as date_parcel_changed,
     property_class,
@@ -110,3 +110,4 @@ select
     geometry as geom,
     year as parcel_year
 from {{ source('arcgis','madison_parcels') }}
+where obj_id <> 79239 --Duplicate record from source system parcel 070913330018
