@@ -21,6 +21,7 @@ agg_cte as (
         ward,
         alder_district,
         geom,
+        geom_4326,
         max(case when parcel_id = site_parcel_id then parcel_address end) as parcel_address,
         sum(bedrooms) as bedrooms,
         sum(full_baths) as full_baths,
@@ -43,15 +44,30 @@ agg_cte as (
         sum(net_taxes) as net_taxes,
         sum(total_taxes) as total_taxes,
         max(lot_size) as lot_size,
-        sum(total_dwelling_units) as total_dwelling_units
+        sum(total_dwelling_units) as total_dwelling_units,
+
+        max(current_total_land_value_city) as current_total_land_value_city,
+        max(current_total_value_city) as current_total_value_city,
+        max(total_net_taxes_city) as total_net_taxes_city
+
     from {{ ref('fact_parcels') }} parcels
     group by 
         site_parcel_id,
         parcel_year,
         ward,
         alder_district,
-        geom
+        geom,
+        geom_4326
 )
 
-select *
+select *,
+    net_taxes / nullif(current_total_value, 0) as tax_rate,
+    net_taxes / nullif(lot_size, 0) as net_taxes_per_sqft_lot,
+    current_land_value / nullif(lot_size, 0) as land_value_per_sqft_lot,
+    current_land_value / nullif(current_total_value, 0) as land_share_property,
+    current_land_value /  nullif(current_total_land_value_city, 0) as land_share_city,
+    current_total_value / nullif(current_total_value_city, 0) as total_share_city,
+    land_share_city / nullif(total_share_city, 0) as land_total_ratio_city,
+    total_share_city / nullif(land_share_city, 0) as land_value_alignment_index,
+    land_share_city * total_net_taxes_city as land_value_shift_taxes
 from agg_cte
