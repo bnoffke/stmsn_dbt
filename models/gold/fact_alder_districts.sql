@@ -4,4 +4,4 @@
     )
 }}
 
-{{ generate_fact_overlay('alder_districts_localize_geom','alder_districts','alder_district_name') }}
+{{ generate_fact_overlay('stg_alder_districts','alder_districts','alder_district_name') }}

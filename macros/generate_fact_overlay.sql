@@ -1,6 +1,6 @@
 {% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name) %}
 
-{% set ref_streets_join = "streets_join_" ~ overlay_alias %}
+{% set ref_streets_join = "stg_streets_join_" ~ overlay_alias %}
 
 with parcel_info as (
     select 
