@@ -18,8 +18,10 @@ agg_cte as (
         mode(lot_type_1) as lot_type_1,
         mode(lot_type_2) as lot_type_2,
         mode(zoning_all) as zoning_all,
-        ward,
-        alder_district,
+        mode(ward) as ward,
+        mode(alder_district_name) as alder_district_name,
+        mode(area_plan_name) as area_plan_name,
+        
         geom,
         geom_4326,
         max(case when parcel_id = site_parcel_id then parcel_address end) as parcel_address,
@@ -54,8 +56,6 @@ agg_cte as (
     group by 
         site_parcel_id,
         parcel_year,
-        ward,
-        alder_district,
         geom,
         geom_4326
 )
