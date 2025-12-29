@@ -107,7 +107,7 @@ select
     max_construction_year,
     x_coord,
     y_coord,
-    geometry as geom,
+    ST_MakeValid(geometry) as geom,
     year as parcel_year
 from {{ source('arcgis','madison_parcels') }}
 where obj_id <> 79239 --Duplicate record from source system parcel 070913330018
