@@ -16,13 +16,13 @@ with parcel_info as (
         sum(parcels.net_taxes) as total_net_taxes,
         sum(parcels.total_taxes) as total_taxes,
         sum(parcels.total_dwelling_units) as total_dwelling_units,
-        sum(parcels.lot_size) as total_area,
+        sum(case when parcels.total_taxes > 0 then parcels.lot_size else 0 end) as total_area,
 
         max(parcels.current_total_land_value_city) as current_total_land_value_city,
         max(parcels.current_total_value_city) as current_total_value_city,
         max(parcels.total_net_taxes_city) as total_net_taxes_city,
 
-        sum(parcels.total_taxes) / sum(parcels.lot_size) as avg_taxes_per_sqft
+        sum(parcels.total_taxes) / total_area as avg_taxes_per_sqft
 
     from {{ ref(overlay_ref) }} {{overlay_alias}}
     left outer join {{ ref('fact_sites') }} parcels
