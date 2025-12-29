@@ -25,6 +25,7 @@ agg_cte as (
         geom,
         geom_4326,
         max(case when parcel_id = site_parcel_id then parcel_address end) as parcel_address,
+        list(parcel_id ORDER BY parcel_id) FILTER (WHERE parcel_id IS NOT NULL) as parcel_ids,
         sum(bedrooms) as bedrooms,
         sum(full_baths) as full_baths,
         sum(half_baths) as half_baths,
@@ -61,9 +62,10 @@ agg_cte as (
 )
 
 select *,
-    ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom_4326, 0.00001)) geom_4326_geojson,
+    ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom_4326, 0.00001).ST_FlipCoordinates()) geom_4326_geojson,
     net_taxes / nullif(current_total_value, 0) as tax_rate,
     net_taxes / nullif(lot_size, 0) as net_taxes_per_sqft_lot,
+    total_taxes / nullif(lot_size, 0) as total_taxes_per_sqft_lot,
     current_land_value / nullif(lot_size, 0) as land_value_per_sqft_lot,
     current_land_value / nullif(current_total_value, 0) as land_share_property,
     current_land_value /  nullif(current_total_land_value_city, 0) as land_share_city,

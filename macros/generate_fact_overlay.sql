@@ -8,7 +8,7 @@ with parcel_info as (
         {{overlay_alias}}.geom,
         parcels.parcel_year,
 
-        count(parcels.parcel_id) as total_parcels,
+        count(parcels.site_parcel_id) as total_parcels,
         sum(parcels.bedrooms) as total_bedrooms,
         sum(parcels.current_land_value) as total_land_value,
         sum(parcels.current_improvement_value) as total_improvement_value,
@@ -17,6 +17,11 @@ with parcel_info as (
         sum(parcels.total_taxes) as total_taxes,
         sum(parcels.total_dwelling_units) as total_dwelling_units,
         sum(parcels.lot_size) as total_area,
+
+        max(parcels.current_total_land_value_city) as current_total_land_value_city,
+        max(parcels.current_total_value_city) as current_total_value_city,
+        max(parcels.total_net_taxes_city) as total_net_taxes_city,
+
         sum(parcels.total_taxes) / sum(parcels.lot_size) as avg_taxes_per_sqft
 
     from {{ ref(overlay_ref) }} {{overlay_alias}}
@@ -37,8 +42,8 @@ street_info as (
         sum(streets.street_width * streets.intersect_street_length) as total_street_sqft,
         sum(streets.city_maintains * streets.street_width * streets.intersect_street_length) as total_city_maint_street_sqft,
         sum(streets.intersect_street_length * streets.speed_limit) / sum(streets.intersect_street_length) as avg_speed_limit,
-        ST_Union(streets.intersect_geom) as streets_geom,
-        ST_Union(case when streets.city_maintains = 1 then streets.intersect_geom else null end) as city_maint_streets_geom
+        ST_Union_agg(streets.intersect_geom) as streets_geom,
+        ST_Union_agg(case when streets.city_maintains = 1 then streets.intersect_geom else null end) as city_maint_streets_geom
 
     from {{ ref(overlay_ref) }} {{overlay_alias}}
     left outer join {{ ref(ref_streets_join)}} streets
@@ -52,6 +57,8 @@ select
     parcel_info.{{overlay_name}},
     parcel_info.parcel_year as year_number,
     parcel_info.geom,
+    st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326') as geom_4326,
+    ST_AsGeoJSON(ST_SimplifyPreserveTopology(st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326'), 0.00001).ST_FlipCoordinates()) as geom_4326_geojson,
     parcel_info.total_parcels,
     parcel_info.total_bedrooms,
     parcel_info.total_land_value,
@@ -61,7 +68,20 @@ select
     parcel_info.total_taxes,
     parcel_info.total_dwelling_units,
     parcel_info.total_area,
-    parcel_info.avg_taxes_per_sqft,
+    parcel_info.current_total_land_value_city,
+    parcel_info.current_total_value_city,
+    parcel_info.total_net_taxes_city,
+
+    parcel_info.total_net_taxes / nullif(parcel_info.total_value, 0) as tax_rate,
+    parcel_info.total_net_taxes / nullif(parcel_info.total_area, 0) as net_taxes_per_sqft_lot,
+    parcel_info.total_taxes / nullif(parcel_info.total_area, 0) as total_taxes_per_sqft_lot,
+    parcel_info.total_land_value / nullif(parcel_info.total_area, 0) as land_value_per_sqft_lot,
+    parcel_info.total_land_value / nullif(parcel_info.total_value, 0) as land_share_property,
+    parcel_info.total_land_value / nullif(parcel_info.current_total_land_value_city, 0) as land_share_city,
+    parcel_info.total_value / nullif(parcel_info.current_total_value_city, 0) as total_share_city,
+    land_share_city / nullif(total_share_city, 0) as land_total_ratio_city,
+    total_share_city / nullif(land_share_city, 0) as land_value_alignment_index,
+    land_share_city * parcel_info.total_net_taxes_city as land_value_shift_taxes,
 
     street_info.total_street_sqft,
     street_info.total_city_maint_street_sqft,

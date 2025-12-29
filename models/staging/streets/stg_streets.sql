@@ -2,10 +2,10 @@
     tags=['streets']
 )}}
 
-select 
+select
     asset_id as street_id,
     year as street_year,
-    geometry as geom,
+    ST_MakeValid(geometry) as geom,
     speed_limit,
     surface_width as street_width,
     lanes as street_lanes,

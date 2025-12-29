@@ -1,6 +1,7 @@
 {{
     config(
-        tags=['alder_districts']
+        tags=['alder_districts'],
+        location=get_external_location()
     )
 }}
 

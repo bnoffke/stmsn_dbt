@@ -1,6 +1,7 @@
 {{
     config(
-        tags=['area_plans']
+        tags=['area_plans'],
+        location=get_external_location()
     )
 }}
 
