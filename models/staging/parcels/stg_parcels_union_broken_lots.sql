@@ -44,7 +44,7 @@ select
     any_value(special_assessment) as special_assessment,
     any_value(other_charges) as other_charges,
     any_value(total_taxes) as total_taxes,
-    coalesce(any_value(lot_size), st_area(ST_Union_Agg(geom))) as lot_size,
+    coalesce(any_value(lot_size), 0) as lot_size,
     any_value(frontage_street) as frontage_street,
     any_value(water_frontage) as water_frontage,
     any_value(tif_district) as tif_district,
