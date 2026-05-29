@@ -13,6 +13,10 @@ with parcel_info as (
         sum(parcels.current_land_value) as total_land_value,
         sum(parcels.current_improvement_value) as total_improvement_value,
         sum(parcels.current_total_value) as total_value,
+        sum(parcels.previous_land_value) as previous_land_value,
+        sum(parcels.previous_improvement_value) as previous_improvement_value,
+        sum(parcels.previous_total_value) as previous_total_value,
+        
         sum(parcels.net_taxes) as total_net_taxes,
         sum(parcels.total_taxes) as total_taxes,
         sum(parcels.total_dwelling_units) as total_dwelling_units,

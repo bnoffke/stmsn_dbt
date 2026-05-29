@@ -8,7 +8,8 @@ select
     streets.street_length * (ST_Length(ST_Intersection(streets.geom,{{overlay_alias}}.geom)) / ST_Length(streets.geom)) as intersect_street_length,
     streets.street_width,
     streets.city_maintains,
-    streets.speed_limit
+    streets.speed_limit,
+    row_number() over (partition by streets.street_id,streets.street_year order by intersect_street_length desc) as intersect_rank
 
 from {{ ref('stg_streets') }} streets
 inner join {{ ref(overlay_ref) }} as {{overlay_alias}}
