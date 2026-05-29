@@ -111,7 +111,6 @@ with bronze as (
         ST_MakeValid(geometry) as geom,
         year as parcel_year
     from {{ source('arcgis','madison_parcels') }}
-    where obj_id <> 79239 --Duplicate record from source system parcel 070913330018
 ),
 
 backfill as (
