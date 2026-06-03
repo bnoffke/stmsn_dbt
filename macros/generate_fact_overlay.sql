@@ -55,6 +55,24 @@ street_info as (
     group by {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
         streets.street_year
+),
+
+surface_info as (
+    select
+        {{overlay_alias}}.{{overlay_name}},
+        {{overlay_alias}}.geom,
+        surfaces.impervious_surface_year,
+        
+        --sum(surfaces.intersect_impervious_surface_area) as total_intersect_impervious_surface_area,
+        sum(case when surfaces.is_people_surface = 1 then surfaces.intersect_impervious_surface_area else 0 end) as total_people_impervious_surface_area,
+        sum(case when surfaces.is_vehicle_surface = 1 then surfaces.intersect_impervious_surface_area else 0 end) as total_vehicle_impervious_surface_area
+
+    from {{ ref(overlay_ref) }} {{overlay_alias}}
+    left outer join {{ ref('stg_surfaces_join_' ~ overlay_alias) }} surfaces
+        on {{overlay_alias}}.{{overlay_name}} = surfaces.{{overlay_name}}
+    group by {{overlay_alias}}.{{overlay_name}},
+        {{overlay_alias}}.geom,
+        surfaces.impervious_surface_year
 )
 
 select
@@ -93,11 +111,21 @@ select
     street_info.streets_geom,
     street_info.city_maint_streets_geom,
 
-    parcel_info.total_taxes / street_info.total_city_maint_street_sqft as taxes_per_city_maint_street_sqft
+    surface_info.total_people_impervious_surface_area,
+    surface_info.total_vehicle_impervious_surface_area,
+    surface_info.total_people_impervious_surface_area / nullif(surface_info.total_vehicle_impervious_surface_area,0) as people_to_vehicle_surface_ratio,
+
+    parcel_info.total_taxes / street_info.total_city_maint_street_sqft as taxes_per_city_maint_street_sqft,
+    surface_info.total_people_impervious_surface_area / nullif(total_dwelling_units, 0) as people_surface_area_per_dwelling_unit,
+    surface_info.total_vehicle_impervious_surface_area / nullif(total_dwelling_units, 0) as vehicle_surface_area_per_dwelling_unit,
+
 
 from parcel_info
 left outer join street_info
     on parcel_info.{{overlay_name}} = street_info.{{overlay_name}}
     and parcel_info.parcel_year = street_info.street_year
+left outer join surface_info
+    on parcel_info.{{overlay_name}} = surface_info.{{overlay_name}}
+    and parcel_info.parcel_year = surface_info.impervious_surface_year
 
 {% endmacro %}

@@ -9,7 +9,7 @@ sources:
       - name: madison_streets
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/streets/**/*.parquet"
-      - name: impervious_surfaces
+      - name: madison_impervious_surfaces
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/impervious_surfaces/**/*.parquet"
       - name: madison_alder_districts
