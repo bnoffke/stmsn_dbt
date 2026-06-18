@@ -5,7 +5,7 @@
   {% if target.name == 'prod' %}
     {{ return('gs://stmsn-' ~ layer ~ '/' ~ model_name ~ '.parquet') }}
   {% else %}
-    {% set dev_path = '~/data/stmsn_dbt/' ~ layer %}
+    {% set dev_path = '/home/bnoffke/data/stmsn_dbt/' ~ layer %}
     {{ return(dev_path ~ '/' ~ model_name ~ '.parquet') }}
   {% endif %}
 

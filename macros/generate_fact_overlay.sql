@@ -1,4 +1,4 @@
-{% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name) %}
+{% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name,display_geom_col=none) %}
 
 {% set ref_streets_join = "stg_streets_join_" ~ overlay_alias %}
 
@@ -6,6 +6,7 @@ with parcel_info as (
     select 
         {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
+        {% if display_geom_col %}{{overlay_alias}}.{{display_geom_col}},{% endif %}
         parcels.parcel_year,
 
         count(parcels.site_parcel_id) as total_parcels,
@@ -34,6 +35,7 @@ with parcel_info as (
     group by
         {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
+        {% if display_geom_col %}{{overlay_alias}}.{{display_geom_col}},{% endif %}
         parcels.parcel_year
 ),
 
@@ -78,9 +80,10 @@ surface_info as (
 select
     parcel_info.{{overlay_name}},
     parcel_info.parcel_year as year_number,
-    parcel_info.geom,
-    st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326') as geom_4326,
-    ST_AsGeoJSON(ST_SimplifyPreserveTopology(st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326'), 0.00001).ST_FlipCoordinates()) as geom_4326_geojson,
+    {% set display_geom_expr = 'parcel_info.' ~ (display_geom_col if display_geom_col else 'geom') %}
+    {{display_geom_expr}} as geom,
+    st_transform({{display_geom_expr}}, '{{ var("madison_crs") }}', 'EPSG:4326') as geom_4326,
+    ST_AsGeoJSON(ST_SimplifyPreserveTopology(st_transform({{display_geom_expr}}, '{{ var("madison_crs") }}', 'EPSG:4326'), 0.00001).ST_FlipCoordinates()) as geom_4326_geojson,
     parcel_info.total_parcels,
     parcel_info.total_bedrooms,
     parcel_info.total_land_value,
