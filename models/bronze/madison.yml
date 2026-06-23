@@ -4,50 +4,76 @@ sources:
   - name: arcgis
     tables:
       - name: madison_parcels
+        description: "Madison parcel boundaries and property information."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA2/FeatureServer/0/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/parcels/**/*.parquet"
       - name: madison_streets
+        description: "Madison street centerlines."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA_ENGR/MapServer/1/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/streets/**/*.parquet"
       - name: madison_impervious_surfaces
+        description: "Madison impervious surfaces."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA_ENGR/MapServer/7/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/impervious_surfaces/**/*.parquet"
       - name: madison_alder_districts
+        description: "Madison Alder District Overlays."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA/MapServer/10/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/alder_district_overlays/**/*.parquet"
       - name: madison_area_plans
+        description: "Madison Area Plan Overlays."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA_PLANNING/MapServer/18/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/area_plan_overlays/**/*.parquet"
       - name: madison_tod_overlay
+        description: "Madison Transit-Oriented Development Overlay Zoning District Boundary."
+        meta:
+          endpoint: "https://maps.cityofmadison.com/arcgis/rest/services/Public/OPEN_DATA_PLANNING/MapServer/16/query"
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/tod_overlays/**/*.parquet"
   - name: webfiles
     tables:
       - name: madison_tax_roll
+        description: "Madison tax roll data from City of Madison Finance Department."
+        meta:
+          endpoint: "https://www.cityofmadison.com/finance/documents/treasury/tax-roll/"
         config:
           external_location: "read_parquet('gs://stmsn-bronze/webfiles/madison/tax_roll/**/*.parquet', union_by_name=True)"
           formatter: oldstyle
   - name: assessor
     tables:
       - name: madison_mls_parcel
+        description: "Madison MLS assessor parcel records."
         config:
           external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlsprcl.parquet', union_by_name=True)"
           formatter: oldstyle
       - name: madison_mls_building
+        description: "Madison MLS assessor building records."
         config:
           external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlsbldg.parquet', union_by_name=True)"
           formatter: oldstyle
       - name: madison_mls_sale
+        description: "Madison MLS assessor sale records."
         config:
           external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlssale.parquet', union_by_name=True)"
           formatter: oldstyle
   - name: backfill
     tables:
       - name: madison_parcels_backfill
+        description: "Backfilled historical Madison parcel facts (dropped backfill load)."
         config:
           external_location: "gs://stmsn-bronze/dropped_backfill/madison/fact_parcels_*_backfill.parquet"
   - name: legacy
     tables:
       - name: madison_lakes_and_rivers
+        description: "Legacy Madison lakes and rivers geometry."
         config:
           external_location: "gs://stmsn-bronze/legacy/madison-lakes-rivers/*.parquet"
