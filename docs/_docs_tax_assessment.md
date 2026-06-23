@@ -125,3 +125,39 @@ This describes whether the property has been assessed by the state authorities.
 {% docs exemption_type %}
 This specifies the type of exemptions, if any, that apply to the property.
 {% enddocs %}
+
+{% docs city_tax %}
+The net property tax levied by the City of Madison for the given tax year, after applicable exemptions and deductions.
+{% enddocs %}
+
+{% docs county_tax %}
+The net property tax levied by Dane County for the given tax year, after applicable exemptions and deductions.
+{% enddocs %}
+
+{% docs gross_tax %}
+The total property tax billed before any credits or lottery/gaming offsets are applied, representing the sum of all taxing jurisdictions.
+{% enddocs %}
+
+{% docs matc_tax %}
+The net property tax levied by Madison Area Technical College (MATC) for the given tax year, after applicable exemptions and deductions.
+{% enddocs %}
+
+{% docs net_tax %}
+The total net property tax owed across all taxing jurisdictions after all exemptions, credits, and deductions have been applied.
+{% enddocs %}
+
+{% docs school_tax %}
+The net property tax levied by the applicable school district for the given tax year, after applicable exemptions and deductions.
+{% enddocs %}
+
+{% docs previous_land_value %}
+The assessed value of the land portion of the property from the prior assessment year, used to track changes in land valuation over time.
+{% enddocs %}
+
+{% docs previous_improvement_value %}
+The assessed value of improvements (structures and buildings) on the property from the prior assessment year, used to track changes in improvement valuation over time.
+{% enddocs %}
+
+{% docs previous_total_value %}
+The total assessed value of the property (land plus improvements) from the prior assessment year, used to compare against current values for change analysis.
+{% enddocs %}

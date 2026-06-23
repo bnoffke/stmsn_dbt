@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fact_streets
+    description: "Enriched street segments joining staging streets with their primary area plan and alder district overlays, plus a WGS-84 geometry for web mapping."
+    columns:
+      - name: street_id
+        data_type: character varying
+        description: '{{ doc("street_id") }}'
+      - name: street_year
+        data_type: bigint
+        description: '{{ doc("street_year") }}'
+      - name: geom
+        data_type: geometry
+        description: '{{ doc("geom") }}'
+      - name: speed_limit
+        data_type: double
+        description: '{{ doc("speed_limit") }}'
+      - name: street_width
+        data_type: double
+        description: '{{ doc("street_width") }}'
+      - name: street_lanes
+        data_type: double
+        description: '{{ doc("street_lanes") }}'
+      - name: street_length
+        data_type: double
+        description: '{{ doc("street_length") }}'
+      - name: is_truck_route
+        data_type: character varying
+        description: '{{ doc("is_truck_route") }}'
+      - name: has_sidewalk
+        data_type: integer
+        description: '{{ doc("has_sidewalk") }}'
+      - name: median_width
+        data_type: double
+        description: '{{ doc("median_width") }}'
+      - name: is_oneway
+        data_type: integer
+        description: '{{ doc("is_oneway") }}'
+      - name: city_maintains
+        data_type: integer
+        description: '{{ doc("city_maintains") }}'
+      - name: alder_district
+        data_type: character varying
+        description: '{{ doc("alder_district") }}'
+      - name: area_plan_name
+        data_type: character varying
+        description: '{{ doc("area_plan_name") }}'
+      - name: intersect_geom
+        data_type: geometry
+        description: '{{ doc("intersect_geom") }}'
+      - name: intersect_street_length
+        data_type: double
+        description: '{{ doc("intersect_street_length") }}'
+      - name: intersect_rank
+        data_type: bigint
+        description: '{{ doc("intersect_rank") }}'
+      - name: alder_district_name
+        data_type: character varying
+        description: '{{ doc("alder_district_name") }}'
+      - name: geom_4326
+        data_type: geometry
+        description: '{{ doc("geom_4326") }}'

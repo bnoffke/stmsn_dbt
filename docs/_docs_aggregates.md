@@ -53,3 +53,27 @@ The sum of land area measured in square feet or acres for all parcels, which hel
 {% docs year_number %}
 The year in which the data was collected or reported. This is typically used to analyze trends over time or to benchmark infrastructure changes and maintenance activities within a specific year.
 {% enddocs %}
+
+{% docs parcel_ids %}
+The ordered list of individual parcel_ids that have been grouped into a single site record. fact_sites aggregates parcels sharing the same geographic footprint (site_parcel_id), so this array captures all constituent parcel identifiers for traceability back to the parcel level.
+{% enddocs %}
+
+{% docs total_people_impervious_surface_area %}
+The total area in square feet of impervious surfaces classified as "people" surfaces (e.g., sidewalks, playgrounds, building footprints) within the district, plan boundary, or site. Summed from intersecting impervious surface polygons where is_people_surface = 1.
+{% enddocs %}
+
+{% docs total_vehicle_impervious_surface_area %}
+The total area in square feet of impervious surfaces classified as "vehicle" surfaces (e.g., roads, parking lots, driveways, alleys) within the district, plan boundary, or site. Summed from intersecting impervious surface polygons where is_vehicle_surface = 1.
+{% enddocs %}
+
+{% docs people_to_vehicle_surface_ratio %}
+The ratio of people impervious surface area to vehicle impervious surface area, calculated as total_people_impervious_surface_area divided by total_vehicle_impervious_surface_area. Values greater than 1 indicate more pedestrian-oriented surface coverage; values less than 1 indicate vehicle infrastructure dominates. Returns null when total_vehicle_impervious_surface_area is zero.
+{% enddocs %}
+
+{% docs people_surface_area_per_dwelling_unit %}
+People impervious surface area (sidewalks, playgrounds, etc.) divided by the total number of dwelling units in the area, calculated as total_people_impervious_surface_area divided by total_dwelling_units. Measures the pedestrian surface coverage available per housing unit. Returns null when total_dwelling_units is zero.
+{% enddocs %}
+
+{% docs vehicle_surface_area_per_dwelling_unit %}
+Vehicle impervious surface area (roads, parking, driveways, etc.) divided by the total number of dwelling units in the area, calculated as total_vehicle_impervious_surface_area divided by total_dwelling_units. Measures the vehicle surface coverage per housing unit and can indicate car-dependency of an area. Returns null when total_dwelling_units is zero.
+{% enddocs %}

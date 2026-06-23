@@ -1,0 +1,19 @@
+
+version: 2
+
+models:
+  - name: stg_area_plans
+    description: "Staged City of Madison neighborhood and area planning boundaries, representing the most recent year of planning district data."
+    columns:
+      - name: area_plan_id
+        data_type: BIGINT
+        description: '{{ doc("area_plan_id") }}'
+      - name: area_plan_name
+        data_type: VARCHAR
+        description: '{{ doc("area_plan_name") }}'
+      - name: area_plan_sqft
+        data_type: DOUBLE
+        description: '{{ doc("area_plan_sqft") }}'
+      - name: geom
+        data_type: GEOMETRY
+        description: '{{ doc("geom") }}'

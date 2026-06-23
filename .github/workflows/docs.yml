@@ -1,0 +1,60 @@
+name: dbt docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissions required for GitHub Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time; let an in-progress run finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen --no-install-project
+
+      - name: Build dbt docs
+        run: |
+          uv run dbt deps
+          uv run dbt docs generate \
+            --empty-catalog \
+            --no-partial-parse \
+            --profiles-dir .github/ci-profiles
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp target/index.html target/manifest.json target/catalog.json _site/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

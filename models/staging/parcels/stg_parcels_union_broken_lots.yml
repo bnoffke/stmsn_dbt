@@ -1,0 +1,422 @@
+
+version: 2
+
+models:
+  - name: stg_parcels_union_broken_lots
+    description: "Collapses multi-row parcel lots that share a parcel_id and parcel_year into a single row by aggregating attributes and unioning their geometries, resolving parcels split across multiple source records."
+    columns:
+      - name: obj_id
+        data_type: bigint
+        description: '{{ doc("obj_id") }}'
+
+      - name: parcel_id
+        data_type: character varying
+        description: '{{ doc("parcel_id") }}'
+
+      - name: site_parcel_id
+        data_type: character varying
+        description: '{{ doc("site_parcel_id") }}'
+
+      - name: parcel_address
+        data_type: character varying
+        description: '{{ doc("parcel_address") }}'
+
+      - name: date_parcel_changed
+        data_type: timestamp
+        description: '{{ doc("date_parcel_changed") }}'
+
+      - name: property_class
+        data_type: character varying
+        description: '{{ doc("property_class") }}'
+
+      - name: property_use
+        data_type: character varying
+        description: '{{ doc("property_use") }}'
+
+      - name: assessment_area
+        data_type: bigint
+        description: '{{ doc("assessment_area") }}'
+
+      - name: area_name
+        data_type: character varying
+        description: '{{ doc("area_name") }}'
+
+      - name: more_than_one_build
+        data_type: character varying
+        description: '{{ doc("more_than_one_build") }}'
+
+      - name: home_style
+        data_type: character varying
+        description: '{{ doc("home_style") }}'
+
+      - name: year_built
+        data_type: bigint
+        description: '{{ doc("year_built") }}'
+
+      - name: bedrooms
+        data_type: bigint
+        description: '{{ doc("bedrooms") }}'
+
+      - name: full_baths
+        data_type: double precision
+        description: '{{ doc("full_baths") }}'
+
+      - name: half_baths
+        data_type: bigint
+        description: '{{ doc("half_baths") }}'
+
+      - name: total_living_area
+        data_type: bigint
+        description: '{{ doc("total_living_area") }}'
+
+      - name: first_floor
+        data_type: bigint
+        description: '{{ doc("first_floor") }}'
+
+      - name: second_floor
+        data_type: bigint
+        description: '{{ doc("second_floor") }}'
+
+      - name: third_floor
+        data_type: bigint
+        description: '{{ doc("third_floor") }}'
+
+      - name: above_third_floor
+        data_type: bigint
+        description: '{{ doc("above_third_floor") }}'
+
+      - name: finished_attic
+        data_type: bigint
+        description: '{{ doc("finished_attic") }}'
+
+      - name: basement
+        data_type: bigint
+        description: '{{ doc("basement") }}'
+
+      - name: finished_basement
+        data_type: bigint
+        description: '{{ doc("finished_basement") }}'
+
+      - name: exterior_wall_1
+        data_type: character varying
+        description: '{{ doc("exterior_wall_1") }}'
+
+      - name: exterior_wall_2
+        data_type: character varying
+        description: '{{ doc("exterior_wall_2") }}'
+
+      - name: fireplaces
+        data_type: bigint
+        description: '{{ doc("fireplaces") }}'
+
+      - name: central_air
+        data_type: character varying
+        description: '{{ doc("central_air") }}'
+
+      - name: partial_assessed
+        data_type: character varying
+        description: '{{ doc("partial_assessed") }}'
+
+      - name: assessed_by_state
+        data_type: character varying
+        description: '{{ doc("assessed_by_state") }}'
+
+      - name: current_land_value
+        data_type: bigint
+        description: '{{ doc("current_land_value") }}'
+
+      - name: current_improvement_value
+        data_type: bigint
+        description: '{{ doc("current_improvement_value") }}'
+
+      - name: current_total_value
+        data_type: bigint
+        description: '{{ doc("current_total_value") }}'
+
+      - name: previous_land_value
+        data_type: bigint
+        description: '{{ doc("previous_land_value") }}'
+
+      - name: previous_improvement_value
+        data_type: bigint
+        description: '{{ doc("previous_improvement_value") }}'
+
+      - name: previous_total_value
+        data_type: bigint
+        description: '{{ doc("previous_total_value") }}'
+
+      - name: net_taxes
+        data_type: double precision
+        description: '{{ doc("net_taxes") }}'
+
+      - name: special_assessment
+        data_type: bigint
+        description: '{{ doc("special_assmnt") }}'
+
+      - name: other_charges
+        data_type: bigint
+        description: '{{ doc("other_charges") }}'
+
+      - name: total_taxes
+        data_type: double precision
+        description: '{{ doc("total_taxes") }}'
+
+      - name: lot_size
+        data_type: double precision
+        description: '{{ doc("lot_size") }}'
+
+      - name: frontage_street
+        data_type: character varying
+        description: '{{ doc("frontage_street") }}'
+
+      - name: water_frontage
+        data_type: character varying
+        description: '{{ doc("water_frontage") }}'
+
+      - name: tif_district
+        data_type: bigint
+        description: '{{ doc("tif_district") }}'
+
+      - name: tax_school_dist
+        data_type: character varying
+        description: '{{ doc("tax_school_dist") }}'
+
+      - name: elementary_school
+        data_type: character varying
+        description: '{{ doc("elementary_school") }}'
+
+      - name: middle_school
+        data_type: character varying
+        description: '{{ doc("middle_school") }}'
+
+      - name: high_school
+        data_type: character varying
+        description: '{{ doc("high_school") }}'
+
+      - name: ward
+        data_type: double precision
+        description: '{{ doc("ward") }}'
+
+      - name: state_assembly_district
+        data_type: double precision
+        description: '{{ doc("state_assembly_district") }}'
+
+      - name: refuse_district
+        data_type: character varying
+        description: '{{ doc("refuse_district") }}'
+
+      - name: refuse_url
+        data_type: character varying
+        description: '{{ doc("refuse_url") }}'
+
+      - name: previous_land_2
+        data_type: bigint
+        description: '{{ doc("previous_land_2") }}'
+
+      - name: previous_impr_2
+        data_type: bigint
+        description: '{{ doc("previous_impr_2") }}'
+
+      - name: previous_total_2
+        data_type: bigint
+        description: '{{ doc("previous_total_2") }}'
+
+      - name: alder_district
+        data_type: double precision
+        description: '{{ doc("alder_district") }}'
+
+      - name: assessment_change_date
+        data_type: timestamp
+        description: '{{ doc("assessment_change_date") }}'
+
+      - name: building_district
+        data_type: double precision
+        description: '{{ doc("building_district") }}'
+
+      - name: capitol_fire_district
+        data_type: character varying
+        description: '{{ doc("capitol_fire_district") }}'
+
+      - name: date_added
+        data_type: timestamp
+        description: '{{ doc("date_added") }}'
+
+      - name: deed_page
+        data_type: bigint
+        description: '{{ doc("deed_page") }}'
+
+      - name: deed_restriction
+        data_type: bigint
+        description: '{{ doc("deed_restriction") }}'
+
+      - name: deed_volume
+        data_type: bigint
+        description: '{{ doc("deed_volume") }}'
+
+      - name: electrical_district
+        data_type: double precision
+        description: '{{ doc("electrical_district") }}'
+
+      - name: env_health_district
+        data_type: double precision
+        description: '{{ doc("env_health_district") }}'
+
+      - name: exemption_type
+        data_type: character varying
+        description: '{{ doc("exemption_type") }}'
+
+      - name: fire_district
+        data_type: double precision
+        description: '{{ doc("fire_district") }}'
+
+      - name: flood_plain
+        data_type: bigint
+        description: '{{ doc("flood_plain") }}'
+
+      - name: heating_district
+        data_type: double precision
+        description: '{{ doc("heating_district") }}'
+
+      - name: illegal_land_division
+        data_type: bigint
+        description: '{{ doc("illegal_land_division") }}'
+
+      - name: landscape_buffer
+        data_type: bigint
+        description: '{{ doc("landscape_buffer") }}'
+
+      - name: local_historical_dist
+        data_type: character varying
+        description: '{{ doc("local_historical_dist") }}'
+
+      - name: lot_depth
+        data_type: double precision
+        description: '{{ doc("lot_depth") }}'
+
+      - name: lot_number
+        data_type: bigint
+        description: '{{ doc("lot_number") }}'
+
+      - name: lot_type_1
+        data_type: character varying
+        description: '{{ doc("lot_type_1") }}'
+
+      - name: lot_type_2
+        data_type: character varying
+        description: '{{ doc("lot_type_2") }}'
+
+      - name: lot_width
+        data_type: double precision
+        description: '{{ doc("lot_width") }}'
+
+      - name: national_historical_dist
+        data_type: bigint
+        description: '{{ doc("national_historical_dist") }}'
+
+      - name: owner_occupied
+        data_type: character varying
+        description: '{{ doc("owner_occupied") }}'
+
+      - name: parcel_change_date
+        data_type: timestamp
+        description: '{{ doc("parcel_change_date") }}'
+
+      - name: parcel_code
+        data_type: character varying
+        description: '{{ doc("parcel_code") }}'
+
+      - name: pending
+        data_type: character varying
+        description: '{{ doc("pending") }}'
+
+      - name: planning_district
+        data_type: character varying
+        description: '{{ doc("planning_district") }}'
+
+      - name: plumbing_district
+        data_type: double precision
+        description: '{{ doc("plumbing_district") }}'
+
+      - name: police_district
+        data_type: character varying
+        description: '{{ doc("police_district") }}'
+
+      - name: police_sector
+        data_type: double precision
+        description: '{{ doc("police_sector") }}'
+
+      - name: previous_class
+        data_type: character varying
+        description: '{{ doc("previous_class") }}'
+
+      - name: property_use_code
+        data_type: bigint
+        description: '{{ doc("property_use_code") }}'
+
+      - name: railroad_frontage
+        data_type: character varying
+        description: '{{ doc("railroad_frontage") }}'
+
+      - name: senate_district
+        data_type: double precision
+        description: '{{ doc("senate_district") }}'
+
+      - name: supervisor_district
+        data_type: double precision
+        description: '{{ doc("supervisor_district") }}'
+
+      - name: total_dwelling_units
+        data_type: bigint
+        description: '{{ doc("total_dwelling_units") }}'
+
+      - name: type_water_frontage
+        data_type: character varying
+        description: '{{ doc("type_water_frontage") }}'
+
+      - name: zoning_all
+        data_type: character varying
+        description: '{{ doc("zoning_all") }}'
+
+      - name: house_nbr
+        data_type: bigint
+        description: '{{ doc("house_nbr") }}'
+
+      - name: street_dir
+        data_type: character varying
+        description: '{{ doc("street_dir") }}'
+
+      - name: street_name
+        data_type: character varying
+        description: '{{ doc("street_name") }}'
+
+      - name: street_type
+        data_type: character varying
+        description: '{{ doc("street_type") }}'
+
+      - name: unit
+        data_type: character varying
+        description: '{{ doc("unit") }}'
+
+      - name: property_change_date
+        data_type: timestamp
+        description: '{{ doc("property_change_date") }}'
+
+      - name: max_construction_year
+        data_type: bigint
+        description: '{{ doc("max_construction_year") }}'
+
+      - name: x_coord
+        data_type: double precision
+        description: '{{ doc("x_coord") }}'
+
+      - name: y_coord
+        data_type: double precision
+        description: '{{ doc("y_coord") }}'
+
+      - name: geom
+        data_type: geometry
+        description: '{{ doc("geom") }}'
+
+      - name: parcel_year
+        data_type: bigint
+        description: '{{ doc("parcel_year") }}'

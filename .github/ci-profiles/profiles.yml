@@ -1,0 +1,14 @@
+# CI-only dbt profile for building the docs site.
+# Docs are generated with `--empty-catalog`, so no warehouse data or
+# cloud credentials are needed — this just gives dbt a DuckDB adapter to
+# compile the project against. Do NOT put real secrets here.
+stmsn_dbt:
+  target: ci
+  outputs:
+    ci:
+      type: duckdb
+      path: /tmp/stmsn-ci.duckdb
+      threads: 1
+      extensions:
+        - spatial
+        - parquet

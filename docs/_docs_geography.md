@@ -37,3 +37,19 @@ This value represents the area of overlap between the parcel and the area plan, 
 {% docs intersect_rank %}
 This column ranks the intersections based on their intersected area, providing a relative indication of significance or priority for planning considerations.
 {% enddocs %}
+
+{% docs streets_geom %}
+The geometry of a street segment in the local projected coordinate reference system used by the City of Madison.
+{% enddocs %}
+
+{% docs city_maint_streets_geom %}
+The geometry of a street segment that is maintained by the City of Madison, in the local projected coordinate reference system.
+{% enddocs %}
+
+{% docs intersect_geom %}
+The clipped overlap geometry representing the portion of a feature that falls within an intersecting overlay polygon, in the local projected coordinate reference system.
+{% enddocs %}
+
+{% docs geom_4326_geojson %}
+The geometry of a feature serialized as a GeoJSON string in the WGS 84 coordinate system (EPSG:4326), suitable for use in web mapping applications and APIs.
+{% enddocs %}

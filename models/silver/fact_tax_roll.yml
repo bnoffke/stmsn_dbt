@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: fact_tax_roll
+    description: "Cleaned and standardized annual tax roll records for Madison parcels, passing through one row per parcel per tax year with assessed values, fair market estimates, and itemized tax components."
+    columns:
+      - name: parcel_id
+        data_type: character varying
+        description: '{{ doc("parcel_id") }}'
+      - name: tax_year
+        data_type: integer
+        description: '{{ doc("tax_year") }}'
+      - name: assessed_value_land
+        data_type: decimal(18,2)
+        description: '{{ doc("assessed_value_land") }}'
+      - name: assessed_value_improvement
+        data_type: decimal(18,2)
+        description: '{{ doc("assessed_value_improvement") }}'
+      - name: total_assessed_value
+        data_type: decimal(18,2)
+        description: '{{ doc("total_assessed_value") }}'
+      - name: est_fair_mkt_land
+        data_type: decimal(18,2)
+        description: '{{ doc("est_fair_mkt_land") }}'
+      - name: est_fair_mkt_improvement
+        data_type: decimal(18,2)
+        description: '{{ doc("est_fair_mkt_improvement") }}'
+      - name: total_estimated_fair_market
+        data_type: decimal(18,2)
+        description: '{{ doc("total_estimated_fair_market") }}'
+      - name: county_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("county_tax") }}'
+      - name: city_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("city_tax") }}'
+      - name: school_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("school_tax") }}'
+      - name: matc_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("matc_tax") }}'
+      - name: net_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("net_tax") }}'
+      - name: gross_tax
+        data_type: decimal(18,2)
+        description: '{{ doc("gross_tax") }}'
+      - name: parcel_address
+        data_type: character varying
+        description: '{{ doc("parcel_address") }}'

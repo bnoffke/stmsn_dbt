@@ -1,0 +1,46 @@
+
+version: 2
+
+models:
+  - name: stg_streets
+    description: "Staged street segment data for the City of Madison, including geometry, physical attributes, and maintenance status."
+    columns:
+      - name: street_id
+        data_type: VARCHAR
+        description: '{{ doc("street_id") }}'
+      - name: street_year
+        data_type: BIGINT
+        description: '{{ doc("street_year") }}'
+      - name: geom
+        data_type: GEOMETRY
+        description: '{{ doc("geom") }}'
+      - name: speed_limit
+        data_type: DOUBLE
+        description: '{{ doc("speed_limit") }}'
+      - name: street_width
+        data_type: DOUBLE
+        description: '{{ doc("street_width") }}'
+      - name: street_lanes
+        data_type: DOUBLE
+        description: '{{ doc("street_lanes") }}'
+      - name: street_length
+        data_type: DOUBLE
+        description: '{{ doc("street_length") }}'
+      - name: is_truck_route
+        data_type: VARCHAR
+        description: '{{ doc("is_truck_route") }}'
+      - name: has_sidewalk
+        data_type: INTEGER
+        description: '{{ doc("has_sidewalk") }}'
+      - name: median_width
+        data_type: DOUBLE
+        description: '{{ doc("median_width") }}'
+      - name: is_oneway
+        data_type: INTEGER
+        description: '{{ doc("is_oneway") }}'
+      - name: city_maintains
+        data_type: INTEGER
+        description: '{{ doc("city_maintains") }}'
+      - name: alder_district
+        data_type: VARCHAR
+        description: '{{ doc("alder_district") }}'

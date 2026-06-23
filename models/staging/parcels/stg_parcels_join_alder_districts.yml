@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: parcels_join_alder_districts
+  - name: stg_parcels_join_alder_districts
     description: "This model applies an overlay transformation to parcel data using the geometry of alder districts, localizing the geometry to create a new dataset that reflects the updated spatial relationships between parcels and alder districts."
     columns:
       - name: parcel_id

@@ -1,0 +1,168 @@
+version: 2
+
+models:
+  - name: fact_sites
+    description: "One row per site (grouped parcels sharing a common footprint) per parcel year, aggregating parcel-level attributes and computing derived tax and land-value metrics at the site level."
+    columns:
+      - name: site_parcel_id
+        data_type: character varying
+        description: '{{ doc("site_parcel_id") }}'
+      - name: parcel_year
+        data_type: bigint
+        description: '{{ doc("parcel_year") }}'
+      - name: property_class
+        data_type: character varying
+        description: '{{ doc("property_class") }}'
+      - name: property_use
+        data_type: character varying
+        description: '{{ doc("property_use") }}'
+      - name: area_name
+        data_type: character varying
+        description: '{{ doc("area_name") }}'
+      - name: lot_type_1
+        data_type: character varying
+        description: '{{ doc("lot_type_1") }}'
+      - name: lot_type_2
+        data_type: character varying
+        description: '{{ doc("lot_type_2") }}'
+      - name: zoning_all
+        data_type: character varying
+        description: '{{ doc("zoning_all") }}'
+      - name: ward
+        data_type: double
+        description: '{{ doc("ward") }}'
+      - name: alder_district_name
+        data_type: character varying
+        description: '{{ doc("alder_district_name") }}'
+      - name: area_plan_name
+        data_type: character varying
+        description: '{{ doc("area_plan_name") }}'
+      - name: geom
+        data_type: geometry
+        description: '{{ doc("geom") }}'
+      - name: geom_4326
+        data_type: geometry
+        description: '{{ doc("geom_4326") }}'
+      - name: parcel_address
+        data_type: character varying
+        description: '{{ doc("parcel_address") }}'
+      - name: parcel_ids
+        data_type: varchar[]
+        description: '{{ doc("parcel_ids") }}'
+      - name: bedrooms
+        data_type: double
+        description: '{{ doc("bedrooms") }}'
+      - name: full_baths
+        data_type: double
+        description: '{{ doc("full_baths") }}'
+      - name: half_baths
+        data_type: double
+        description: '{{ doc("half_baths") }}'
+      - name: total_living_area
+        data_type: double
+        description: '{{ doc("total_living_area") }}'
+      - name: first_floor
+        data_type: double
+        description: '{{ doc("first_floor") }}'
+      - name: second_floor
+        data_type: double
+        description: '{{ doc("second_floor") }}'
+      - name: third_floor
+        data_type: double
+        description: '{{ doc("third_floor") }}'
+      - name: above_third_floor
+        data_type: double
+        description: '{{ doc("above_third_floor") }}'
+      - name: finished_attic
+        data_type: double
+        description: '{{ doc("finished_attic") }}'
+      - name: basement
+        data_type: double
+        description: '{{ doc("basement") }}'
+      - name: finished_basement
+        data_type: double
+        description: '{{ doc("finished_basement") }}'
+      - name: fireplaces
+        data_type: double
+        description: '{{ doc("fireplaces") }}'
+      - name: central_air
+        data_type: character varying
+        description: '{{ doc("central_air") }}'
+      - name: current_land_value
+        data_type: decimal(38,2)
+        description: '{{ doc("current_land_value") }}'
+      - name: current_improvement_value
+        data_type: decimal(38,2)
+        description: '{{ doc("current_improvement_value") }}'
+      - name: current_total_value
+        data_type: decimal(38,2)
+        description: '{{ doc("current_total_value") }}'
+      - name: previous_land_value
+        data_type: double
+        description: '{{ doc("previous_land_value") }}'
+      - name: previous_improvement_value
+        data_type: double
+        description: '{{ doc("previous_improvement_value") }}'
+      - name: previous_total_value
+        data_type: double
+        description: '{{ doc("previous_total_value") }}'
+      - name: special_assessment
+        data_type: double
+        description: '{{ doc("special_assessment") }}'
+      - name: other_charges
+        data_type: double
+        description: '{{ doc("other_charges") }}'
+      - name: net_taxes
+        data_type: double
+        description: '{{ doc("net_taxes") }}'
+      - name: total_taxes
+        data_type: double
+        description: '{{ doc("total_taxes") }}'
+      - name: lot_size
+        data_type: double
+        description: '{{ doc("lot_size") }}'
+      - name: total_dwelling_units
+        data_type: double
+        description: '{{ doc("total_dwelling_units") }}'
+      - name: current_total_land_value_city
+        data_type: decimal(38,2)
+        description: '{{ doc("current_total_land_value_city") }}'
+      - name: current_total_value_city
+        data_type: decimal(38,2)
+        description: '{{ doc("current_total_value_city") }}'
+      - name: total_net_taxes_city
+        data_type: double
+        description: '{{ doc("total_net_taxes_city") }}'
+      - name: geom_4326_geojson
+        data_type: json
+        description: '{{ doc("geom_4326_geojson") }}'
+      - name: tax_rate
+        data_type: double
+        description: '{{ doc("tax_rate") }}'
+      - name: net_taxes_per_sqft_lot
+        data_type: double
+        description: '{{ doc("net_taxes_per_sqft_lot") }}'
+      - name: total_taxes_per_sqft_lot
+        data_type: double
+        description: '{{ doc("total_taxes_per_sqft_lot") }}'
+      - name: land_value_per_sqft_lot
+        data_type: double
+        description: '{{ doc("land_value_per_sqft_lot") }}'
+      - name: land_share_property
+        data_type: double
+        description: '{{ doc("land_share_property") }}'
+      - name: land_share_city
+        data_type: double
+        description: '{{ doc("land_share_city") }}'
+      - name: total_share_city
+        data_type: double
+        description: '{{ doc("total_share_city") }}'
+      - name: land_total_ratio_city
+        data_type: double
+        description: '{{ doc("land_total_ratio_city") }}'
+      - name: land_value_alignment_index
+        data_type: double
+        description: '{{ doc("land_value_alignment_index") }}'
+      - name: land_value_shift_taxes
+        data_type: double
+        description: '{{ doc("land_value_shift_taxes") }}'
