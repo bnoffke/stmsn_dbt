@@ -4,6 +4,20 @@
 ) 
 }}
 
+with parcel_tax_roll as ( 
+    select parcels.* exclude(current_total_value, current_land_value, current_improvement_value, net_taxes, total_taxes),
+        coalesce(tax_roll.total_assessed_value, parcels.current_total_value) as current_total_value,
+        coalesce(tax_roll.assessed_value_land, parcels.current_land_value) as current_land_value,
+        coalesce(tax_roll.assessed_value_improvement, parcels.current_improvement_value) as current_improvement_value,
+        coalesce(tax_roll.net_tax, parcels.net_taxes) as net_taxes,
+        coalesce(tax_roll.gross_tax, parcels.total_taxes) as total_taxes
+
+    from {{ ref('stg_parcels') }} parcels
+    left outer join {{ ref('fact_tax_roll') }} tax_roll
+        on parcels.parcel_id = tax_roll.parcel_id
+        and parcels.parcel_year = tax_roll.tax_year
+)
+
 select parcels.*,
     net_taxes / nullif(current_total_value, 0) as tax_rate,
     net_taxes / nullif(lot_size, 0) as net_taxes_per_sqft_lot,
@@ -30,7 +44,7 @@ select parcels.*,
         ) AS full_address,
     area_plans.area_plan_name,
     alder_districts.alder_district_name
-from {{ ref('stg_parcels') }} parcels
+from parcel_tax_roll parcels
 left outer join {{ ref('stg_parcels_join_area_plans') }} area_plans
     on parcels.parcel_id = area_plans.parcel_id
     and parcels.parcel_year = area_plans.parcel_year

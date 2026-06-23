@@ -1,0 +1,25 @@
+
+version: 2
+
+models:
+  - name: stg_impervious_surfaces
+    description: "Staged impervious surface polygons for the City of Madison, categorized by surface type and flagged for pedestrian or vehicle use."
+    columns:
+      - name: impervious_surface_id
+        data_type: BIGINT
+        description: '{{ doc("impervious_surface_id") }}'
+      - name: impervious_surface_year
+        data_type: BIGINT
+        description: '{{ doc("impervious_surface_year") }}'
+      - name: geom
+        data_type: GEOMETRY
+        description: '{{ doc("geom") }}'
+      - name: surface_type
+        data_type: VARCHAR
+        description: '{{ doc("surface_type") }}'
+      - name: is_people_surface
+        data_type: INTEGER
+        description: '{{ doc("is_people_surface") }}'
+      - name: is_vehicle_surface
+        data_type: INTEGER
+        description: '{{ doc("is_vehicle_surface") }}'

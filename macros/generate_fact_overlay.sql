@@ -1,4 +1,4 @@
-{% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name) %}
+{% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name,display_geom_col=none) %}
 
 {% set ref_streets_join = "stg_streets_join_" ~ overlay_alias %}
 
@@ -6,6 +6,7 @@ with parcel_info as (
     select 
         {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
+        {% if display_geom_col %}{{overlay_alias}}.{{display_geom_col}},{% endif %}
         parcels.parcel_year,
 
         count(parcels.site_parcel_id) as total_parcels,
@@ -13,16 +14,20 @@ with parcel_info as (
         sum(parcels.current_land_value) as total_land_value,
         sum(parcels.current_improvement_value) as total_improvement_value,
         sum(parcels.current_total_value) as total_value,
+        sum(parcels.previous_land_value) as previous_land_value,
+        sum(parcels.previous_improvement_value) as previous_improvement_value,
+        sum(parcels.previous_total_value) as previous_total_value,
+        
         sum(parcels.net_taxes) as total_net_taxes,
         sum(parcels.total_taxes) as total_taxes,
         sum(parcels.total_dwelling_units) as total_dwelling_units,
-        sum(parcels.lot_size) as total_area,
+        sum(case when parcels.total_taxes > 0 then parcels.lot_size else 0 end) as total_area,
 
         max(parcels.current_total_land_value_city) as current_total_land_value_city,
         max(parcels.current_total_value_city) as current_total_value_city,
         max(parcels.total_net_taxes_city) as total_net_taxes_city,
 
-        sum(parcels.total_taxes) / sum(parcels.lot_size) as avg_taxes_per_sqft
+        sum(parcels.total_taxes) / total_area as avg_taxes_per_sqft
 
     from {{ ref(overlay_ref) }} {{overlay_alias}}
     left outer join {{ ref('fact_sites') }} parcels
@@ -30,6 +35,7 @@ with parcel_info as (
     group by
         {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
+        {% if display_geom_col %}{{overlay_alias}}.{{display_geom_col}},{% endif %}
         parcels.parcel_year
 ),
 
@@ -51,14 +57,33 @@ street_info as (
     group by {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
         streets.street_year
+),
+
+surface_info as (
+    select
+        {{overlay_alias}}.{{overlay_name}},
+        {{overlay_alias}}.geom,
+        surfaces.impervious_surface_year,
+        
+        --sum(surfaces.intersect_impervious_surface_area) as total_intersect_impervious_surface_area,
+        sum(case when surfaces.is_people_surface = 1 then surfaces.intersect_impervious_surface_area else 0 end) as total_people_impervious_surface_area,
+        sum(case when surfaces.is_vehicle_surface = 1 then surfaces.intersect_impervious_surface_area else 0 end) as total_vehicle_impervious_surface_area
+
+    from {{ ref(overlay_ref) }} {{overlay_alias}}
+    left outer join {{ ref('stg_surfaces_join_' ~ overlay_alias) }} surfaces
+        on {{overlay_alias}}.{{overlay_name}} = surfaces.{{overlay_name}}
+    group by {{overlay_alias}}.{{overlay_name}},
+        {{overlay_alias}}.geom,
+        surfaces.impervious_surface_year
 )
 
 select
     parcel_info.{{overlay_name}},
     parcel_info.parcel_year as year_number,
-    parcel_info.geom,
-    st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326') as geom_4326,
-    ST_AsGeoJSON(ST_SimplifyPreserveTopology(st_transform(parcel_info.geom, '{{ var("madison_crs") }}', 'EPSG:4326'), 0.00001).ST_FlipCoordinates()) as geom_4326_geojson,
+    {% set display_geom_expr = 'parcel_info.' ~ (display_geom_col if display_geom_col else 'geom') %}
+    {{display_geom_expr}} as geom,
+    st_transform({{display_geom_expr}}, '{{ var("madison_crs") }}', 'EPSG:4326') as geom_4326,
+    ST_AsGeoJSON(ST_SimplifyPreserveTopology(st_transform({{display_geom_expr}}, '{{ var("madison_crs") }}', 'EPSG:4326'), 0.00001).ST_FlipCoordinates()) as geom_4326_geojson,
     parcel_info.total_parcels,
     parcel_info.total_bedrooms,
     parcel_info.total_land_value,
@@ -89,11 +114,21 @@ select
     street_info.streets_geom,
     street_info.city_maint_streets_geom,
 
-    parcel_info.total_taxes / street_info.total_city_maint_street_sqft as taxes_per_city_maint_street_sqft
+    surface_info.total_people_impervious_surface_area,
+    surface_info.total_vehicle_impervious_surface_area,
+    surface_info.total_people_impervious_surface_area / nullif(surface_info.total_vehicle_impervious_surface_area,0) as people_to_vehicle_surface_ratio,
+
+    parcel_info.total_taxes / street_info.total_city_maint_street_sqft as taxes_per_city_maint_street_sqft,
+    surface_info.total_people_impervious_surface_area / nullif(total_dwelling_units, 0) as people_surface_area_per_dwelling_unit,
+    surface_info.total_vehicle_impervious_surface_area / nullif(total_dwelling_units, 0) as vehicle_surface_area_per_dwelling_unit,
+
 
 from parcel_info
 left outer join street_info
     on parcel_info.{{overlay_name}} = street_info.{{overlay_name}}
     and parcel_info.parcel_year = street_info.street_year
+left outer join surface_info
+    on parcel_info.{{overlay_name}} = surface_info.{{overlay_name}}
+    and parcel_info.parcel_year = surface_info.impervious_surface_year
 
 {% endmacro %}

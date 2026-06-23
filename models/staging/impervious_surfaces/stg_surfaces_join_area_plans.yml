@@ -1,0 +1,31 @@
+
+version: 2
+
+models:
+  - name: stg_surfaces_join_area_plans
+    description: "Impervious surface polygons spatially joined to City of Madison area plan boundaries, with each row representing the intersection of a surface with an area plan."
+    columns:
+      - name: impervious_surface_id
+        data_type: BIGINT
+        description: '{{ doc("impervious_surface_id") }}'
+      - name: impervious_surface_year
+        data_type: BIGINT
+        description: '{{ doc("impervious_surface_year") }}'
+      - name: area_plan_name
+        data_type: VARCHAR
+        description: '{{ doc("area_plan_name") }}'
+      - name: intersect_geom
+        data_type: GEOMETRY
+        description: '{{ doc("intersect_geom") }}'
+      - name: intersect_impervious_surface_area
+        data_type: DOUBLE
+        description: '{{ doc("intersect_impervious_surface_area") }}'
+      - name: surface_type
+        data_type: VARCHAR
+        description: '{{ doc("surface_type") }}'
+      - name: is_people_surface
+        data_type: INTEGER
+        description: '{{ doc("is_people_surface") }}'
+      - name: is_vehicle_surface
+        data_type: INTEGER
+        description: '{{ doc("is_vehicle_surface") }}'

@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: fact_area_plans
+    description: "One row per area plan boundary per year, rolling up parcels, streets, and impervious surfaces within each planning zone and computing derived tax, land-value, and surface-area metrics."
+    columns:
+      - name: area_plan_name
+        data_type: character varying
+        description: '{{ doc("area_plan_name") }}'
+      - name: year_number
+        data_type: bigint
+        description: '{{ doc("year_number") }}'
+      - name: geom
+        data_type: geometry
+        description: '{{ doc("geom") }}'
+      - name: geom_4326
+        data_type: geometry
+        description: '{{ doc("geom_4326") }}'
+      - name: geom_4326_geojson
+        data_type: json
+        description: '{{ doc("geom_4326_geojson") }}'
+      - name: total_parcels
+        data_type: bigint
+        description: '{{ doc("total_parcels") }}'
+      - name: total_bedrooms
+        data_type: double
+        description: '{{ doc("total_bedrooms") }}'
+      - name: total_land_value
+        data_type: decimal(38,2)
+        description: '{{ doc("total_land_value") }}'
+      - name: total_improvement_value
+        data_type: decimal(38,2)
+        description: '{{ doc("total_improvement_value") }}'
+      - name: total_value
+        data_type: decimal(38,2)
+        description: '{{ doc("total_value") }}'
+      - name: total_net_taxes
+        data_type: double
+        description: '{{ doc("total_net_taxes") }}'
+      - name: total_taxes
+        data_type: double
+        description: '{{ doc("total_taxes") }}'
+      - name: total_dwelling_units
+        data_type: double
+        description: '{{ doc("total_dwelling_units") }}'
+      - name: total_area
+        data_type: double
+        description: '{{ doc("total_area") }}'
+      - name: current_total_land_value_city
+        data_type: decimal(38,2)
+        description: '{{ doc("current_total_land_value_city") }}'
+      - name: current_total_value_city
+        data_type: decimal(38,2)
+        description: '{{ doc("current_total_value_city") }}'
+      - name: total_net_taxes_city
+        data_type: double
+        description: '{{ doc("total_net_taxes_city") }}'
+      - name: tax_rate
+        data_type: double
+        description: '{{ doc("tax_rate") }}'
+      - name: net_taxes_per_sqft_lot
+        data_type: double
+        description: '{{ doc("net_taxes_per_sqft_lot") }}'
+      - name: total_taxes_per_sqft_lot
+        data_type: double
+        description: '{{ doc("total_taxes_per_sqft_lot") }}'
+      - name: land_value_per_sqft_lot
+        data_type: double
+        description: '{{ doc("land_value_per_sqft_lot") }}'
+      - name: land_share_property
+        data_type: double
+        description: '{{ doc("land_share_property") }}'
+      - name: land_share_city
+        data_type: double
+        description: '{{ doc("land_share_city") }}'
+      - name: total_share_city
+        data_type: double
+        description: '{{ doc("total_share_city") }}'
+      - name: land_total_ratio_city
+        data_type: double
+        description: '{{ doc("land_total_ratio_city") }}'
+      - name: land_value_alignment_index
+        data_type: double
+        description: '{{ doc("land_value_alignment_index") }}'
+      - name: land_value_shift_taxes
+        data_type: double
+        description: '{{ doc("land_value_shift_taxes") }}'
+      - name: total_street_sqft
+        data_type: double
+        description: '{{ doc("total_street_sqft") }}'
+      - name: total_city_maint_street_sqft
+        data_type: double
+        description: '{{ doc("total_city_maint_street_sqft") }}'
+      - name: avg_speed_limit
+        data_type: double
+        description: '{{ doc("avg_speed_limit") }}'
+      - name: streets_geom
+        data_type: geometry
+        description: '{{ doc("streets_geom") }}'
+      - name: city_maint_streets_geom
+        data_type: geometry
+        description: '{{ doc("city_maint_streets_geom") }}'
+      - name: total_people_impervious_surface_area
+        data_type: double
+        description: '{{ doc("total_people_impervious_surface_area") }}'
+      - name: total_vehicle_impervious_surface_area
+        data_type: double
+        description: '{{ doc("total_vehicle_impervious_surface_area") }}'
+      - name: people_to_vehicle_surface_ratio
+        data_type: double
+        description: '{{ doc("people_to_vehicle_surface_ratio") }}'
+      - name: taxes_per_city_maint_street_sqft
+        data_type: double
+        description: '{{ doc("taxes_per_city_maint_street_sqft") }}'
+      - name: people_surface_area_per_dwelling_unit
+        data_type: double
+        description: '{{ doc("people_surface_area_per_dwelling_unit") }}'
+      - name: vehicle_surface_area_per_dwelling_unit
+        data_type: double
+        description: '{{ doc("vehicle_surface_area_per_dwelling_unit") }}'

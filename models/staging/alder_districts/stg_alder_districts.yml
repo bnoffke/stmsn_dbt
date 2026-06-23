@@ -1,0 +1,22 @@
+
+version: 2
+
+models:
+  - name: stg_alder_districts
+    description: "Staged City of Madison Common Council alder district boundaries, including lake-subtracted display geometries for districts that overlap with Mendota or Monona."
+    columns:
+      - name: alder_district_id
+        data_type: VARCHAR
+        description: '{{ doc("alder_district_id") }}'
+      - name: alder_district_name
+        data_type: VARCHAR
+        description: '{{ doc("alder_district_name") }}'
+      - name: alder_district_sqft
+        data_type: DOUBLE
+        description: '{{ doc("alder_district_sqft") }}'
+      - name: geom
+        data_type: GEOMETRY
+        description: '{{ doc("geom") }}'
+      - name: display_geom
+        data_type: GEOMETRY
+        description: '{{ doc("display_geom") }}'

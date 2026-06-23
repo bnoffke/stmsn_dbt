@@ -1,0 +1,35 @@
+version: 2
+
+macros:
+  - name: apply_overlay_to_surfaces
+    description: >
+      This macro generates the SQL for joining a generalized set of geospatial polygons to impervious surface polygons. This helps keep consistency and reduces repetition when introducing new overlays into the project.
+
+      Impervious surfaces are attributed to overlay polygons by calculating the geometry of intersection. The facts associated with the surface are passed through to each intersecting overlay, along with the clipped intersection geometry and its area.
+
+
+      Returns a SQL statement with the following columns:
+
+      impervious_surface_id, impervious_surface_year, <overlay_name>, intersect_geom, intersect_impervious_surface_area, surface_type, is_people_surface, is_vehicle_surface
+
+
+      Example: To join the city of Madison's alder districts to impervious surfaces, we would use the macro like so:
+
+        {%raw%}{{ apply_overlay_to_surfaces('stg_alder_districts','alder_districts','alder_district_name')}}{%endraw%}
+
+        stg_alder_districts: A reference that contains the geometry of the alder district and the district name
+
+        alder_districts: The alias to be used in the compiled SQL
+
+        alder_district_name: The column name from the reference that contains the alder district names
+
+    arguments:
+      - name: overlay_ref
+        type: string
+        description: The reference that contains the polygons of the overlay.
+      - name: overlay_alias
+        type: string
+        description: The alias to be used for the overlay reference.
+      - name: overlay_name
+        type: string
+        description: The column name that contains the name of the individual overlays.

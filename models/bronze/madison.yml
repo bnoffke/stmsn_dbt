@@ -9,7 +9,7 @@ sources:
       - name: madison_streets
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/streets/**/*.parquet"
-      - name: impervious_surfaces
+      - name: madison_impervious_surfaces
         config:
           external_location: "gs://stmsn-bronze/arcgis/madison/impervious_surfaces/**/*.parquet"
       - name: madison_alder_districts
@@ -27,3 +27,27 @@ sources:
         config:
           external_location: "read_parquet('gs://stmsn-bronze/webfiles/madison/tax_roll/**/*.parquet', union_by_name=True)"
           formatter: oldstyle
+  - name: assessor
+    tables:
+      - name: madison_mls_parcel
+        config:
+          external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlsprcl.parquet', union_by_name=True)"
+          formatter: oldstyle
+      - name: madison_mls_building
+        config:
+          external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlsbldg.parquet', union_by_name=True)"
+          formatter: oldstyle
+      - name: madison_mls_sale
+        config:
+          external_location: "read_parquet('gs://stmsn-bronze/assessor/madison/**/mlssale.parquet', union_by_name=True)"
+          formatter: oldstyle
+  - name: backfill
+    tables:
+      - name: madison_parcels_backfill
+        config:
+          external_location: "gs://stmsn-bronze/dropped_backfill/madison/fact_parcels_*_backfill.parquet"
+  - name: legacy
+    tables:
+      - name: madison_lakes_and_rivers
+        config:
+          external_location: "gs://stmsn-bronze/legacy/madison-lakes-rivers/*.parquet"
