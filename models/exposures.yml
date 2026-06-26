@@ -1,0 +1,23 @@
+version: 2
+
+exposures:
+  - name: madison_tax_explorer
+    label: "Madison Tax Explorer"
+    type: application
+    maturity: medium
+    url: https://madison-tax-explorer.streamlit.app
+    description: >
+      A Streamlit web app for exploring City of Madison property tax and assessment data.
+      It provides a per-property Parcel Explorer (address search with assessment values,
+      tax detail, and historical trends) and an interactive Parcel Map for visualizing
+      financial metrics across the city with customizable overlays. Data is queried
+      directly from GCS-hosted Parquet files using DuckDB.
+    owner:
+      name: Ben Noffke
+      email: bnoffke3790@gmail.com
+    depends_on:
+      - ref('fact_tax_roll')
+      - ref('fact_parcels')
+      - ref('fact_sites')
+      - ref('fact_area_plans')
+      - ref('fact_alder_districts')
