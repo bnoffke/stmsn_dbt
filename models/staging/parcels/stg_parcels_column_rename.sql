@@ -114,6 +114,8 @@ with bronze as (
 ),
 
 backfill as (
+    -- Written from a legacy fact_parcels.parquet whose GeoParquet metadata defaulted
+    -- to OGC:CRS84; the coordinates are actually madison_crs, matching bronze.
     select * exclude (
         alder_district_name,
         area_plan_name,
@@ -133,6 +135,7 @@ backfill as (
         total_share_city,
         total_taxes_per_sqft_lot
     )
+    replace (st_setcrs(geom, '{{ var("madison_crs") }}') as geom)
     from {{ source('backfill', 'madison_parcels_backfill') }}
 )
 

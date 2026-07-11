@@ -1,8 +1,8 @@
 {{ config(
-    location=get_external_location(),
-    tags=['parcels']
-) 
-}}
+    tags=['parcels'],
+    unique_key='parcel_year',
+    partition_by='parcel_year'
+) }}
 
 
 with 
@@ -57,6 +57,9 @@ agg_cte as (
         max(total_net_taxes_city) as total_net_taxes_city
 
     from {{ ref('fact_parcels') }} parcels
+    {% if is_incremental() %}
+    where parcels.parcel_year >= (select max(parcel_year) from {{ this }})
+    {% endif %}
     group by 
         site_parcel_id,
         parcel_year,

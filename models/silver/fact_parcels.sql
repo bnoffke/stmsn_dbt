@@ -1,8 +1,8 @@
 {{ config(
     tags=['parcels'],
-    location=get_external_location()
-) 
-}}
+    unique_key='parcel_year',
+    partition_by='parcel_year'
+) }}
 
 with parcel_tax_roll as ( 
     select parcels.* exclude(current_total_value, current_land_value, current_improvement_value, net_taxes, total_taxes),
@@ -53,3 +53,6 @@ left outer join {{ ref('stg_parcels_join_alder_districts') }} alder_districts
     on parcels.parcel_id = alder_districts.parcel_id
     and parcels.parcel_year = alder_districts.parcel_year
     and alder_districts.intersect_rank = 1
+{% if is_incremental() %}
+where parcels.parcel_year >= (select max(parcel_year) from {{ this }})
+{% endif %}

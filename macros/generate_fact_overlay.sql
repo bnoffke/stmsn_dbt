@@ -32,6 +32,9 @@ with parcel_info as (
     from {{ ref(overlay_ref) }} {{overlay_alias}}
     left outer join {{ ref('fact_sites') }} parcels
         on {{overlay_alias}}.{{overlay_name}} = parcels.{{overlay_name}}
+        {% if is_incremental() %}
+        and parcels.parcel_year >= (select max(year_number) from {{ this }})
+        {% endif %}
     group by
         {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,
