@@ -1151,6 +1151,14 @@ wheels = [
 ]
 
 [[package]]
+name = "stmsn-catalog"
+version = "0.1.0"
+source = { git = "https://github.com/bnoffke/stmsn-catalog#b2795b0f7234982c4251ce2bf23c9b5db028b890" }
+dependencies = [
+    { name = "google-cloud-storage" },
+]
+
+[[package]]
 name = "stmsn-dbt"
 version = "0.1.0"
 source = { virtual = "." }
@@ -1160,6 +1168,7 @@ dependencies = [
     { name = "duckdb" },
     { name = "google-cloud-storage" },
     { name = "ruamel-yaml" },
+    { name = "stmsn-catalog" },
 ]
 
 [package.dev-dependencies]
@@ -1174,6 +1183,7 @@ requires-dist = [
     { name = "duckdb", specifier = "==1.5.4" },
     { name = "google-cloud-storage", specifier = ">=2.18" },
     { name = "ruamel-yaml", specifier = ">=0.18.17" },
+    { name = "stmsn-catalog", git = "https://github.com/bnoffke/stmsn-catalog" },
 ]
 
 [package.metadata.requires-dev]

@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from catalog import synced_catalog
+from stmsn_catalog import synced_catalog
 
 TARGET = "prod"   # fixed fact about this runner — not parameterized
 

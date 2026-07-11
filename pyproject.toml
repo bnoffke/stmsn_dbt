@@ -8,9 +8,13 @@ dependencies = [
     "duckdb==1.5.4",
     "ruamel-yaml>=0.18.17",
     "google-cloud-storage>=2.18",
+    "stmsn-catalog",
 ]
 
 [dependency-groups]
 dev = [
     "duckdb-cli~=1.5.4",
 ]
+
+[tool.uv.sources]
+stmsn-catalog = { git = "https://github.com/bnoffke/stmsn-catalog" }
