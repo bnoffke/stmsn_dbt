@@ -1,5 +1,5 @@
 {{ config(
-    tags=['parcels'],
+    tags=['parcels', 'monthly'],
     unique_key='parcel_year',
     partition_by='parcel_year'
 ) }}

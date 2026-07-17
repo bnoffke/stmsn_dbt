@@ -1,0 +1,70 @@
+
+version: 2
+
+models:
+  - name: fact_route_traffic
+    description: "Silver view exposing complete historical route traffic days (from int_route_traffic_daily) unioned with today's live records direct from the source. Provides a continuously up-to-date view of route traffic data."
+    columns:
+      - name: route_name
+        data_type: character varying
+        description: '{{ doc("route_name") }}'
+
+      - name: corridor
+        data_type: character varying
+        description: '{{ doc("corridor") }}'
+
+      - name: direction
+        data_type: character varying
+        description: '{{ doc("direction") }}'
+
+      - name: origin
+        data_type: character varying
+        description: '{{ doc("origin") }}'
+
+      - name: destination
+        data_type: character varying
+        description: '{{ doc("destination") }}'
+
+      - name: intermediate
+        data_type: character varying
+        description: '{{ doc("intermediate") }}'
+
+      - name: alternative_index
+        data_type: integer
+        description: '{{ doc("alternative_index") }}'
+
+      - name: description
+        data_type: character varying
+        description: '{{ doc("description") }}'
+
+      - name: distance_meters
+        data_type: integer
+        description: '{{ doc("distance_meters") }}'
+
+      - name: duration_seconds
+        data_type: integer
+        description: '{{ doc("duration_seconds") }}'
+
+      - name: static_duration_seconds
+        data_type: integer
+        description: '{{ doc("static_duration_seconds") }}'
+
+      - name: encoded_polyline
+        data_type: character varying
+        description: '{{ doc("encoded_polyline") }}'
+
+      - name: request_time_utc
+        data_type: timestamp with time zone
+        description: '{{ doc("request_time_utc") }}'
+
+      - name: schedule_name
+        data_type: character varying
+        description: '{{ doc("schedule_name") }}'
+
+      - name: run_id
+        data_type: character varying
+        description: '{{ doc("run_id") }}'
+
+      - name: dt
+        data_type: date
+        description: '{{ doc("dt") }}'

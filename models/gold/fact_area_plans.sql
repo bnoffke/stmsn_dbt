@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['area_plans'],
+        tags=['area_plans', 'monthly'],
         unique_key='year_number',
         partition_by='year_number'
     )

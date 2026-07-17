@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['impervious_surfaces','alder_districts']
+        tags=['impervious_surfaces', 'alder_districts', 'monthly']
     )
 }}
 

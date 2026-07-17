@@ -1,5 +1,5 @@
 {{ config(
-    tags=['area_plans']
+    tags=['area_plans', 'monthly']
 )}}
 
 select sequence as area_plan_id,

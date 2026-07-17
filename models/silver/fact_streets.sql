@@ -1,5 +1,5 @@
 {{ config(
-    tags=['streets'],
+    tags=['streets', 'monthly'],
     unique_key='street_year',
     partition_by='street_year'
 ) }}

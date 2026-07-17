@@ -1,5 +1,5 @@
 {{ config(
-    tags=["tax_roll"]
+    tags=["tax_roll", "yearly"]
 ) }}
 
 select * exclude(parcel_address),

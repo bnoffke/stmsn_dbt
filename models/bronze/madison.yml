@@ -77,3 +77,9 @@ sources:
         description: "Legacy Madison lakes and rivers geometry."
         config:
           external_location: "gs://stmsn-bronze/legacy/madison-lakes-rivers/*.parquet"
+  - name: route-traffic
+    tables:
+      - name: madison_route_traffic
+        description: "Madison route traffic data collected from Google Routes API."
+        config:
+          external_location: "gs://stmsn-bronze/route-traffic/madison/**/*.parquet"

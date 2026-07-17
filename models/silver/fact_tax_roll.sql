@@ -1,5 +1,5 @@
 {{ config(
-    tags=["tax_roll"],
+    tags=["tax_roll", "yearly"],
     unique_key='tax_year',
     partition_by='tax_year'
 ) }}

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['parcels']
+    tags=['parcels', 'monthly']
 ) }}
 
 select * exclude (lot_size),

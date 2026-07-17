@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['alder_districts'],
+        tags=['alder_districts', 'monthly'],
         unique_key='year_number',
         partition_by='year_number'
     )

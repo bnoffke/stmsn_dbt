@@ -1,5 +1,5 @@
 {{ config(
-    tags=['alder_districts']
+    tags=['alder_districts', 'monthly']
 )}}
 
 with source as (

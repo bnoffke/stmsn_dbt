@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['parcels','alder_districts']
+        tags=['parcels', 'alder_districts', 'monthly']
     )
 }}
 

@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['parcels','area_plans']
+        tags=['parcels', 'area_plans', 'monthly']
     )
 }}
 
