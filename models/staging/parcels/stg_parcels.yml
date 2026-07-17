@@ -2,8 +2,8 @@
 version: 2
 
 models:
-  - name: stg_parcels
-    description: "Final staging layer for Madison parcel data, passing through the cleaned and geometry-corrected records from stg_parcels_fix_lot_size as the canonical input for downstream parcel models."
+  - name: stg_parcels_column_rename
+    description: "Renames and casts bronze source columns from the Madison parcels ArcGIS feed into clean, consistent staging column names with proper data types and timestamps."
     columns:
       - name: obj_id
         data_type: bigint
@@ -160,6 +160,10 @@ models:
       - name: total_taxes
         data_type: double precision
         description: '{{ doc("total_taxes") }}'
+
+      - name: lot_size
+        data_type: double precision
+        description: '{{ doc("lot_size") }}'
 
       - name: frontage_street
         data_type: character varying
@@ -417,6 +421,14 @@ models:
         data_type: bigint
         description: '{{ doc("parcel_year") }}'
 
-      - name: lot_size
-        data_type: double precision
-        description: '{{ doc("lot_size") }}'
+      - name: previous_land
+        data_type: bigint
+        description: '{{ doc("previous_land") }}'
+
+      - name: previous_impr
+        data_type: bigint
+        description: '{{ doc("previous_impr") }}'
+
+      - name: previous_total
+        data_type: bigint
+        description: '{{ doc("previous_total") }}'
