@@ -35,6 +35,8 @@ models:
     +database: 'stmsn'
     staging:
       +materialized: view
+    intermediate:
+      +materialized: view
     silver:
       +schema: 'silver'
       +materialized: incremental

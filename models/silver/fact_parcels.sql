@@ -12,7 +12,7 @@ with parcel_tax_roll as (
         coalesce(tax_roll.net_tax, parcels.net_taxes) as net_taxes,
         coalesce(tax_roll.gross_tax, parcels.total_taxes) as total_taxes
 
-    from {{ ref('stg_parcels') }} parcels
+    from {{ ref('int_parcels') }} parcels
     left outer join {{ ref('fact_tax_roll') }} tax_roll
         on parcels.parcel_id = tax_roll.parcel_id
         and parcels.parcel_year = tax_roll.tax_year
@@ -45,11 +45,11 @@ select parcels.*,
     area_plans.area_plan_name,
     alder_districts.alder_district_name
 from parcel_tax_roll parcels
-left outer join {{ ref('stg_parcels_join_area_plans') }} area_plans
+left outer join {{ ref('int_parcels_join_area_plans') }} area_plans
     on parcels.parcel_id = area_plans.parcel_id
     and parcels.parcel_year = area_plans.parcel_year
     and area_plans.intersect_rank = 1
-left outer join {{ ref('stg_parcels_join_alder_districts') }} alder_districts
+left outer join {{ ref('int_parcels_join_alder_districts') }} alder_districts
     on parcels.parcel_id = alder_districts.parcel_id
     and parcels.parcel_year = alder_districts.parcel_year
     and alder_districts.intersect_rank = 1

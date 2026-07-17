@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_surfaces_join_area_plans
+  - name: int_surfaces_join_area_plans
     description: "Impervious surface polygons spatially joined to City of Madison area plan boundaries, with each row representing the intersection of a surface with an area plan."
     columns:
       - name: impervious_surface_id

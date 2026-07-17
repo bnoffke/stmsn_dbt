@@ -2,8 +2,8 @@
 version: 2
 
 models:
-  - name: stg_parcels
-    description: "Final staging layer for Madison parcel data, passing through the cleaned and geometry-corrected records from stg_parcels_fix_lot_size as the canonical input for downstream parcel models."
+  - name: int_parcels
+    description: "Final intermediate layer for Madison parcel data, passing through the cleaned and geometry-corrected records from int_parcels_fix_lot_size as the canonical input for downstream parcel models."
     columns:
       - name: obj_id
         data_type: bigint

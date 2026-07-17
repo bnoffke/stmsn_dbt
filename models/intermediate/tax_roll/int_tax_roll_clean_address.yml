@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_tax_roll_clean_address
+  - name: int_tax_roll_clean_address
     description: "Standardizes the parcel address field from the resolved tax roll by uppercasing and trimming whitespace, producing a consistent address format for downstream joining to parcel records."
     columns:
       - name: parcel_id

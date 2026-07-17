@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_streets_join_alder_districts
+  - name: int_streets_join_alder_districts
     description: "This model applies an overlay operation to the streets data using geometry from the 'alder_districts' table to localize the geometrical features of 'alder_district'."
     columns:
       - name: street_id

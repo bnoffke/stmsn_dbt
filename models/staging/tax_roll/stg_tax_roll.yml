@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_tax_roll_schema_resolve
+  - name: stg_tax_roll
     description: "Normalizes schema variations across annual Madison tax roll source files by coalescing alternate column names, casting types, and producing a unified set of assessment and tax fields for all years."
     columns:
       - name: parcel_id

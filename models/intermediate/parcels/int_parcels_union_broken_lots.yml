@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_parcels_union_broken_lots
+  - name: int_parcels_union_broken_lots
     description: "Collapses multi-row parcel lots that share a parcel_id and parcel_year into a single row by aggregating attributes and unioning their geometries, resolving parcels split across multiple source records."
     columns:
       - name: obj_id

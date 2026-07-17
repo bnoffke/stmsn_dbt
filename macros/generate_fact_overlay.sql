@@ -1,6 +1,6 @@
 {% macro generate_fact_overlay(overlay_ref,overlay_alias,overlay_name,display_geom_col=none) %}
 
-{% set ref_streets_join = "stg_streets_join_" ~ overlay_alias %}
+{% set ref_streets_join = "int_streets_join_" ~ overlay_alias %}
 
 with parcel_info as (
     select 
@@ -73,7 +73,7 @@ surface_info as (
         sum(case when surfaces.is_vehicle_surface = 1 then surfaces.intersect_impervious_surface_area else 0 end) as total_vehicle_impervious_surface_area
 
     from {{ ref(overlay_ref) }} {{overlay_alias}}
-    left outer join {{ ref('stg_surfaces_join_' ~ overlay_alias) }} surfaces
+    left outer join {{ ref('int_surfaces_join_' ~ overlay_alias) }} surfaces
         on {{overlay_alias}}.{{overlay_name}} = surfaces.{{overlay_name}}
     group by {{overlay_alias}}.{{overlay_name}},
         {{overlay_alias}}.geom,

@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_parcels_join_area_plans
+  - name: int_parcels_join_area_plans
     description: "This model applies an overlay transformation to parcels and area plans, calculating the intersection area between their geometries and ranking the intersections by area for each parcel and year."
     columns:
       - name: parcel_id

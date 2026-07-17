@@ -5,7 +5,7 @@
 ) }}
 
 select *
-from {{ ref('stg_tax_roll_clean_address') }}
+from {{ ref('int_tax_roll_clean_address') }}
 {% if is_incremental() %}
 where tax_year >= (select max(tax_year) from {{ this }})
 {% endif %}

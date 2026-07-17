@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_parcels_column_rename
+  - name: stg_parcels
     description: "Renames and casts bronze source columns from the Madison parcels ArcGIS feed into clean, consistent staging column names with proper data types and timestamps."
     columns:
       - name: obj_id

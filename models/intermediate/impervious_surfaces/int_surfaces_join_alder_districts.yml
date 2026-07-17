@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_surfaces_join_alder_districts
+  - name: int_surfaces_join_alder_districts
     description: "Impervious surface polygons spatially joined to City of Madison alder districts, with each row representing the intersection of a surface with a district."
     columns:
       - name: impervious_surface_id

@@ -109,5 +109,5 @@ select
     any_value(y_coord) as y_coord,
     ST_Union_Agg(geom) as geom,
     parcel_year
-from {{ ref('stg_parcels_column_rename') }}
+from {{ ref('stg_parcels') }}
 group by parcel_id, parcel_year

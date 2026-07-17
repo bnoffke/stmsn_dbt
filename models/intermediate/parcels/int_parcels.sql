@@ -3,4 +3,4 @@
 )}}
 
 select *
-from {{ ref('stg_parcels_fix_lot_size') }}
+from {{ ref('int_parcels_fix_lot_size') }}

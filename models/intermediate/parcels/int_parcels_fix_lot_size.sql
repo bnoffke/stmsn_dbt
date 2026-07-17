@@ -12,4 +12,4 @@ select * exclude (lot_size),
             then 0
         else lot_size
         end as lot_size
-from {{ ref('stg_parcels_union_broken_lots') }}
+from {{ ref('int_parcels_union_broken_lots') }}

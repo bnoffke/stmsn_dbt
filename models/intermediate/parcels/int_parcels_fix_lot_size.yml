@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_parcels_fix_lot_size
+  - name: int_parcels_fix_lot_size
     description: "Corrects implausibly small lot_size values by substituting the computed geometry area for primary parcels and zero for secondary (non-site) parcels, ensuring lot sizes reflect actual parcel footprints."
     columns:
       - name: obj_id

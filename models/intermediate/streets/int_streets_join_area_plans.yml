@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_streets_join_area_plans
+  - name: int_streets_join_area_plans
     description: "This model applies a spatial overlay to intersect street geometries with area plan geometries, utilizing an intersection to calculate the length of the street segment that overlaps with each area plan."
     columns:
       - name: street_id
