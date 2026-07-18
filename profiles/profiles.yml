@@ -1,0 +1,15 @@
+stmsn_dbt:
+  target: prod
+  outputs:
+    prod:
+      type: duckdb
+      threads: 4
+      extensions: [spatial, httpfs, parquet, ducklake]
+      secrets:
+        - type: gcs
+          key_id: "{{ env_var('GCS_KEY_ID') }}"
+          secret: "{{ env_var('GCS_SECRET') }}"
+      attach:
+        - path: "ducklake:.ducklake/stmsn.ducklake"
+          alias: stmsn
+          is_ducklake: true

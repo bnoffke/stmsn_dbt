@@ -1,27 +1,34 @@
-import os
+import argparse
 import subprocess
 
 from stmsn_catalog import synced_catalog
 
 TARGET = "prod"   # fixed fact about this runner — not parameterized
+PROFILES_DIR = "profiles"
 
 
 def run_build(select: str) -> None:
-    cmd = ["dbt", "build", "--target", TARGET]
+    cmd = ["dbt", "build", "--target", TARGET, "--profiles-dir", PROFILES_DIR]
     if select:
         cmd += ["--select", select]
     subprocess.run(cmd, check=True)
 
 
 def main() -> None:
-    selects = [s.strip() for s in os.environ.get("STMSN_SELECT", "").split(",") if s.strip()]
-    push_on_failure = os.environ.get("STMSN_PUSH_ON_FAILURE") == "1"
+    parser = argparse.ArgumentParser(description="Run dbt build with catalog sync.")
+    parser.add_argument(
+        "select",
+        nargs="*",
+        help="dbt node selector(s), e.g. tag:daily or source:routes+",
+    )
+    parser.add_argument("--push-on-failure", action="store_true")
+    args = parser.parse_args()
 
-    with synced_catalog(push_on_failure=push_on_failure):
-        if not selects:
+    with synced_catalog(push_on_failure=args.push_on_failure):
+        if not args.select:
             run_build("")
         else:
-            for sel in selects:
+            for sel in args.select:
                 run_build(sel)
 
 
