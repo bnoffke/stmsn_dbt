@@ -28,6 +28,5 @@ jobs:
         run: |
           SHORT_SHA="${GITHUB_SHA::7}"
           IMAGE="us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT }}/stmsn/stmsn-runner"
-          gcloud builds submit \
-            --tag "${IMAGE}:${SHORT_SHA}" \
-            --tag "${IMAGE}:latest"
+          gcloud builds submit --tag "${IMAGE}:${SHORT_SHA}"
+          gcloud artifacts docker tags add "${IMAGE}:${SHORT_SHA}" "${IMAGE}:latest"

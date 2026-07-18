@@ -37,8 +37,8 @@ jobs:
 
       - name: Fetch GCS credentials from Secret Manager
         run: |
-          echo "GCS_KEY_ID=$(gcloud secrets versions access latest --secret=duckdb-reader-hmac-key-id)" >> "$GITHUB_ENV"
-          echo "GCS_SECRET=$(gcloud secrets versions access latest --secret=duckdb-reader-hmac-secret)" >> "$GITHUB_ENV"
+          echo "GCS_KEY_ID=$(gcloud secrets versions access latest --secret=docs-gcs-key-id)" >> "$GITHUB_ENV"
+          echo "GCS_SECRET=$(gcloud secrets versions access latest --secret=docs-gcs-secret)" >> "$GITHUB_ENV"
 
       - name: Pull catalog from stmsn-meta
         run: uv run python -c "from stmsn_catalog import pull_catalog; pull_catalog()"
