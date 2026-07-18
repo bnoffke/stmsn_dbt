@@ -23,17 +23,25 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+on-run-end:
+  - "{{ ducklake_cleanup() }}"
+
 vars:
   madison_crs: 'EPSG:8193'
   
 
 models:
   stmsn_dbt:
+    +database: 'stmsn'
     staging:
       +materialized: view
+    intermediate:
+      +materialized: view
     silver:
-      +materialized: external
-      +format: parquet
+      +schema: 'silver'
+      +materialized: incremental
+      +incremental_strategy: delete+insert
     gold:
-      +materialized: external
-      +format: parquet
+      +schema: 'gold'
+      +materialized: incremental
+      +incremental_strategy: delete+insert

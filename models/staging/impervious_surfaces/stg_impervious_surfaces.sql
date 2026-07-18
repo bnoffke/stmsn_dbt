@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['impervious_surfaces']
+        tags=['impervious_surfaces', 'monthly']
     )
 }}
 

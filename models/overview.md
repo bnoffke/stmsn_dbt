@@ -15,8 +15,11 @@ of a district is dedicated to moving and storing cars versus serving people?*
 ## What's inside
 
 The project follows a **bronze → staging → silver → gold** medallion layout,
-materialized on [DuckDB](https://duckdb.org/) with the `spatial` extension and
-published as Parquet. Geometries are stored in Madison's local projection
+built on [DuckDB](https://duckdb.org/) with the `spatial` extension and
+materialized into a [DuckLake](https://ducklake.select/) lakehouse: the catalog
+lives in `gs://stmsn-meta` (synced around each build with optimistic
+concurrency), and silver/gold tables land as Parquet under `gs://stmsn-lake/`.
+Geometries are stored in Madison's local projection
 (`EPSG:8193`) for accurate area/length math and reprojected to `EPSG:4326` for
 web mapping.
 
@@ -28,9 +31,10 @@ web mapping.
   columns, fixing lot sizes, unioning historically broken lots, resolving
   changing tax-roll schemas, cleaning addresses, and spatially joining features
   to their alder district and area plan.
-- **Silver** (`fact_parcels`, `fact_streets`, `fact_tax_roll`) — conformed,
-  parcel- and segment-grain fact tables combining geometry, assessment, and tax
-  attributes.
+- **Silver** (`fact_parcels`, `fact_streets`, `fact_tax_roll`,
+  `fact_route_traffic`) — conformed, parcel- and segment-grain fact tables
+  combining geometry, assessment, tax, and traffic attributes, written to the
+  `silver` schema in DuckLake.
 - **Gold** — analysis-ready rollups with the metrics advocacy runs on:
   - `fact_sites` — parcels grouped into real-world *sites*, with value-per-acre,
     land-share, tax-rate, and land-value-alignment metrics.

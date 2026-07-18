@@ -1,17 +1,22 @@
 # stmsn — build & publish
 # run `just` (or `just --list`) to see recipes
 
-catalog := "target/stmsn-prod.duckdb"   # must match `path:` of the prod target in profiles.yml
-bucket  := "gs://stmsn-meta/catalog/stmsn.duckdb"
+# loads GCS_KEY_ID / GCS_SECRET from .env (gitignored) for profiles/profiles.yml
+set dotenv-load
 
 default:
     @just --list
 
-# hermetic full prod build into a fresh catalog (no upload)
-prod:
-    rm -f {{catalog}} {{catalog}}.wal
-    dbt build --target prod
+# pull catalog from stmsn-meta, dbt build --target prod (optionally --select), push catalog back
+prod select="":
+    uv run python scripts/entrypoint.py {{select}}
 
-# build fresh, then upload the catalog to GCS
-publish: prod
-    gcloud storage cp {{catalog}} {{bucket}}
+# build and push stmsn-runner image to Artifact Registry (SHA tag + latest)
+publish-image:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    PROJECT=$(gcloud config get-value project)
+    IMAGE="us-central1-docker.pkg.dev/${PROJECT}/stmsn/stmsn-runner"
+    SHA=$(git rev-parse --short HEAD)
+    gcloud builds submit --tag "${IMAGE}:${SHA}"
+    gcloud artifacts docker tags add "${IMAGE}:${SHA}" "${IMAGE}:latest"

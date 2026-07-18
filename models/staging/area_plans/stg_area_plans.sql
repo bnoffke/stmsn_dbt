@@ -1,5 +1,5 @@
 {{ config(
-    tags=['area_plans']
+    tags=['area_plans', 'monthly']
 )}}
 
 select sequence as area_plan_id,
@@ -7,4 +7,6 @@ select sequence as area_plan_id,
     shape_st_areax as area_plan_sqft,
     ST_MakeValid(geometry) as geom
 from {{ source('arcgis','madison_area_plans') }}
-where year = (select max(year) from {{ source('arcgis','madison_area_plans') }})
+-- max-year subquery over the same hive-partitioned glob hits a DuckDB 1.5.4
+-- internal error (dynamic filter pushdown on the partition column)
+qualify year = max(year) over ()

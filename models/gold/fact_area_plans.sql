@@ -1,7 +1,8 @@
 {{
     config(
-        tags=['area_plans'],
-        location=get_external_location()
+        tags=['area_plans', 'monthly'],
+        unique_key='year_number',
+        partition_by='year_number'
     )
 }}
 

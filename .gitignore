@@ -6,3 +6,12 @@ logs/
 __pycache__/
 # dbt writes an anonymous-usage id here when --profiles-dir points at it
 .github/ci-profiles/.user.yml
+
+#ducklake catalogs
+.ducklake/
+
+#dbt artifacts
+.user.yml
+
+# local GCS HMAC creds for just prod
+.env

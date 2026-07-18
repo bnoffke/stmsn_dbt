@@ -1,0 +1,32 @@
+name: publish runner image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.CI_PUBLISHER_SA }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build and push image
+        run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          IMAGE="us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT }}/stmsn/stmsn-runner"
+          gcloud builds submit --tag "${IMAGE}:${SHORT_SHA}"
+          gcloud artifacts docker tags add "${IMAGE}:${SHORT_SHA}" "${IMAGE}:latest"

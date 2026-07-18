@@ -1,7 +1,8 @@
 {{
     config(
-        tags=['alder_districts'],
-        location=get_external_location()
+        tags=['alder_districts', 'monthly'],
+        unique_key='year_number',
+        partition_by='year_number'
     )
 }}
 

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['alder_districts']
+    tags=['alder_districts', 'monthly']
 )}}
 
 with source as (
@@ -8,7 +8,9 @@ with source as (
         st_area(ST_MakeValid(geometry)) as alder_district_sqft,
         ST_MakeValid(geometry) as geom
     from {{ source('arcgis','madison_alder_districts') }}
-    where year = (select max(year) from {{ source('arcgis','madison_alder_districts') }})
+    -- max-year subquery over the same hive-partitioned glob hits a DuckDB 1.5.4
+    -- internal error (dynamic filter pushdown on the partition column)
+    qualify year = max(year) over ()
 ),
 
 mendota as (

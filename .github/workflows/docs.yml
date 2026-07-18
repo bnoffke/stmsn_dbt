@@ -5,13 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Permissions required for GitHub Pages deployment.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only one Pages deployment at a time; let an in-progress run finish.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -31,13 +29,27 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen --no-install-project
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.CI_DOCS_SA }}
+
+      - name: Fetch GCS credentials from Secret Manager
+        run: |
+          echo "GCS_KEY_ID=$(gcloud secrets versions access latest --secret=docs-gcs-key-id)" >> "$GITHUB_ENV"
+          echo "GCS_SECRET=$(gcloud secrets versions access latest --secret=docs-gcs-secret)" >> "$GITHUB_ENV"
+
+      - name: Pull catalog from stmsn-meta
+        run: uv run python -c "from stmsn_catalog import pull_catalog; pull_catalog()"
+
       - name: Build dbt docs
         run: |
-          uv run dbt deps
+          uv run dbt deps --profiles-dir .github/ci-profiles
           uv run dbt docs generate \
-            --empty-catalog \
             --no-partial-parse \
-            --profiles-dir .github/ci-profiles
+            --target prod \
+            --profiles-dir profiles
 
       - name: Assemble site
         run: |

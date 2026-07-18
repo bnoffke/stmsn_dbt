@@ -1,5 +1,5 @@
 {{ config(
-    tags=['streets']
+    tags=['streets', 'monthly']
 )}}
 
 select
