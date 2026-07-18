@@ -9,3 +9,6 @@ __pycache__/
 
 #ducklake catalogs
 .ducklake/
+
+#dbt artifacts
+.user.yml
