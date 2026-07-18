@@ -12,3 +12,6 @@ __pycache__/
 
 #dbt artifacts
 .user.yml
+
+# local GCS HMAC creds for just prod
+.env

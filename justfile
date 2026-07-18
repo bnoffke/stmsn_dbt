@@ -1,6 +1,9 @@
 # stmsn — build & publish
 # run `just` (or `just --list`) to see recipes
 
+# loads GCS_KEY_ID / GCS_SECRET from .env (gitignored) for profiles/profiles.yml
+set dotenv-load
+
 default:
     @just --list
 
