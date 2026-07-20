@@ -30,6 +30,12 @@ vars:
   madison_crs: 'EPSG:8193'
   
 
+seeds:
+  stmsn_dbt:
+    +database: stmsn
+    +schema: reference
+    +quote_columns: false
+
 models:
   stmsn_dbt:
     +database: 'stmsn'
