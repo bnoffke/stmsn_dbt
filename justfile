@@ -20,3 +20,12 @@ publish-image:
     SHA=$(git rev-parse --short HEAD)
     gcloud builds submit --tag "${IMAGE}:${SHA}"
     gcloud artifacts docker tags add "${IMAGE}:${SHA}" "${IMAGE}:latest"
+
+# create local dev ducklake catalog (.ducklake/dev.ducklake, data in .ducklake/dev_data/)
+bootstrap-dev:
+    mkdir -p .ducklake
+    uv run duckdb -f scripts/bootstrap_dev.sql
+
+# dbt against the local dev catalog (bronze still reads from GCS via .env creds)
+dev *args="":
+    uv run dbt build --target dev --profiles-dir profiles {{args}}

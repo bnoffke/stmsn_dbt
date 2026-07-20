@@ -4,12 +4,26 @@ stmsn_dbt:
     prod:
       type: duckdb
       threads: 4
-      extensions: [spatial, httpfs, parquet, ducklake]
+      extensions: [spatial, httpfs, parquet, ducklake, icu]
       secrets:
         - type: gcs
           key_id: "{{ env_var('GCS_KEY_ID') }}"
           secret: "{{ env_var('GCS_SECRET') }}"
       attach:
         - path: "ducklake:.ducklake/stmsn.ducklake"
+          alias: stmsn
+          is_ducklake: true
+    # local dev: catalog/data in .ducklake/dev* (see scripts/bootstrap_dev.sql);
+    # bronze sources still read from GCS, so .env creds are required
+    dev:
+      type: duckdb
+      threads: 4
+      extensions: [spatial, httpfs, parquet, ducklake, icu]
+      secrets:
+        - type: gcs
+          key_id: "{{ env_var('GCS_KEY_ID') }}"
+          secret: "{{ env_var('GCS_SECRET') }}"
+      attach:
+        - path: "ducklake:.ducklake/dev.ducklake"
           alias: stmsn
           is_ducklake: true

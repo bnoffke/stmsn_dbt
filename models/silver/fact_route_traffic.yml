@@ -3,11 +3,16 @@ version: 2
 
 models:
   - name: fact_route_traffic
-    description: "Silver view exposing complete historical route traffic days (from int_route_traffic_daily) unioned with today's live records direct from the source. Provides a continuously up-to-date view of route traffic data."
+    description: "Silver view exposing complete historical route traffic days (from int_route_traffic_daily) unioned with today's live records direct from the source. Provides a continuously up-to-date view of route traffic data with all derived time and metric columns."
     columns:
       - name: route_name
         data_type: character varying
         description: '{{ doc("route_name") }}'
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_route')
+                field: route_name
 
       - name: corridor
         data_type: character varying
@@ -65,6 +70,59 @@ models:
         data_type: character varying
         description: '{{ doc("run_id") }}'
 
-      - name: dt
+      - name: request_date_local
         data_type: date
-        description: '{{ doc("dt") }}'
+        description: '{{ doc("request_date_local") }}'
+        data_tests:
+          - not_null
+
+      - name: request_time_local
+        data_type: timestamp
+        description: '{{ doc("request_time_local") }}'
+        data_tests:
+          - not_null
+
+      - name: day_of_week_name
+        data_type: character varying
+        description: '{{ doc("day_of_week_name") }}'
+
+      - name: is_weekday
+        data_type: boolean
+        description: '{{ doc("is_weekday") }}'
+
+      - name: is_holiday
+        data_type: boolean
+        description: '{{ doc("is_holiday") }}'
+
+      - name: week_start_date_local
+        data_type: date
+        description: '{{ doc("week_start_date_local") }}'
+        data_tests:
+          - not_null
+
+      - name: slot_local
+        data_type: character varying
+        description: '{{ doc("slot_local") }}'
+        data_tests:
+          - not_null
+
+      - name: time_window
+        data_type: character varying
+        description: '{{ doc("time_window") }}'
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [AM, NOON, PM, WEEKEND_PROBE, OTHER]
+
+      - name: expected_poll_count
+        data_type: integer
+        description: '{{ doc("expected_poll_count") }}'
+
+      - name: delay_seconds
+        data_type: integer
+        description: '{{ doc("delay_seconds") }}'
+
+      - name: travel_time_index
+        data_type: double
+        description: '{{ doc("travel_time_index") }}'

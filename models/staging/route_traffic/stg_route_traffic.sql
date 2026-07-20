@@ -18,5 +18,5 @@ select
     request_time_utc::timestamptz   as request_time_utc,
     schedule_name::varchar          as schedule_name,
     run_id::varchar                 as run_id,
-    dt::date                        as dt
+    dt::date                        as request_date_local
 from {{ source('route-traffic', 'madison_route_traffic') }}

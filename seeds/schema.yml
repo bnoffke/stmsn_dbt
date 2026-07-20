@@ -1,0 +1,43 @@
+version: 2
+
+seeds:
+  - name: holidays
+    description: "US federal holidays (observed dates) 2024–2027. Used to flag is_holiday on route-traffic records."
+    config:
+      column_types:
+        holiday_date: date
+        holiday_name: varchar
+    columns:
+      - name: holiday_date
+        description: "Observed date of the federal holiday."
+        data_tests:
+          - not_null
+          - unique
+      - name: holiday_name
+        description: "Name of the federal holiday."
+        data_tests:
+          - not_null
+
+  - name: config_changes
+    description: "Known infrastructure or policy changes affecting route-traffic baselines. Used as an annotation layer on the changepoint chart."
+    config:
+      column_types:
+        corridor: varchar
+        effective_date: date
+        description: varchar
+        source_url: varchar
+    columns:
+      - name: corridor
+        description: "Corridor name matching the corridor column in route-traffic data."
+        data_tests:
+          - not_null
+      - name: effective_date
+        description: "Date the change took effect."
+        data_tests:
+          - not_null
+      - name: description
+        description: "Human-readable description of the change."
+        data_tests:
+          - not_null
+      - name: source_url
+        description: "URL of the source document or announcement."
