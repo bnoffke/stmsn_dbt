@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: agg_route_traffic_daily
+    description: "Daily aggregate of route traffic at the route_name × request_date_local × window grain. Single source of truth for daily PM-peak median delay, changepoint series, and coverage metrics. Excludes OTHER window records."
+    columns:
+      - name: route_name
+        data_type: character varying
+        description: '{{ doc("route_name") }}'
+        data_tests:
+          - not_null
+
+      - name: request_date_local
+        data_type: date
+        description: '{{ doc("request_date_local") }}'
+        data_tests:
+          - not_null
+
+      - name: time_window
+        data_type: character varying
+        description: '{{ doc("time_window") }}'
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [AM, NOON, PM, WEEKEND_PROBE]
+
+      - name: is_weekday
+        data_type: boolean
+        description: '{{ doc("is_weekday") }}'
+
+      - name: is_holiday
+        data_type: boolean
+        description: '{{ doc("is_holiday") }}'
+
+      - name: week_start_date_local
+        data_type: date
+        description: '{{ doc("week_start_date_local") }}'
+
+      - name: expected_poll_count
+        data_type: integer
+        description: '{{ doc("expected_poll_count") }}'
+
+      - name: poll_count
+        data_type: bigint
+        description: "Number of polls observed for this route/date/window."
+        data_tests:
+          - not_null
+
+      - name: coverage_pct
+        data_type: double
+        description: "poll_count / expected_poll_count. Values near 1.0 indicate full coverage; values above 1.1 suggest double-polling or window misclassification."
+
+      - name: duration_median
+        data_type: integer
+        description: "Median duration_seconds for the window."
+
+      - name: duration_p25
+        data_type: integer
+        description: "25th percentile of duration_seconds."
+
+      - name: duration_p75
+        data_type: integer
+        description: "75th percentile of duration_seconds."
+
+      - name: duration_p95
+        data_type: integer
+        description: "95th percentile of duration_seconds."
+
+      - name: duration_min
+        data_type: integer
+        description: "Minimum duration_seconds observed."
+
+      - name: duration_max
+        data_type: integer
+        description: "Maximum duration_seconds observed."
+
+      - name: delay_median
+        data_type: integer
+        description: "Median delay_seconds (duration - static_duration) for the window."
+
+      - name: delay_p25
+        data_type: integer
+        description: "25th percentile of delay_seconds."
+
+      - name: delay_p75
+        data_type: integer
+        description: "75th percentile of delay_seconds."
+
+      - name: delay_p95
+        data_type: integer
+        description: "95th percentile of delay_seconds."
+
+      - name: delay_min
+        data_type: integer
+        description: "Minimum delay_seconds observed."
+
+      - name: delay_max
+        data_type: integer
+        description: "Maximum delay_seconds observed."
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - route_name
+              - request_date_local
+              - time_window

@@ -3,7 +3,7 @@ version: 2
 
 models:
   - name: int_route_traffic
-    description: "Pass-through intermediate over stg_route_traffic; no transforms applied yet."
+    description: "Enriches staged route-traffic records with DST-safe local-time columns, window classification, holiday flag, and delay metrics."
     columns:
       - name: route_name
         data_type: character varying
@@ -65,6 +65,129 @@ models:
         data_type: character varying
         description: '{{ doc("run_id") }}'
 
-      - name: dt
+      - name: request_date_local
         data_type: date
-        description: '{{ doc("dt") }}'
+        description: '{{ doc("request_date_local") }}'
+
+      - name: request_time_local
+        data_type: timestamp
+        description: '{{ doc("request_time_local") }}'
+
+      - name: day_of_week_name
+        data_type: character varying
+        description: '{{ doc("day_of_week_name") }}'
+
+      - name: is_weekday
+        data_type: boolean
+        description: '{{ doc("is_weekday") }}'
+
+      - name: is_holiday
+        data_type: boolean
+        description: '{{ doc("is_holiday") }}'
+
+      - name: week_start_date_local
+        data_type: date
+        description: '{{ doc("week_start_date_local") }}'
+
+      - name: slot_local
+        data_type: character varying
+        description: '{{ doc("slot_local") }}'
+
+      - name: time_window
+        data_type: character varying
+        description: '{{ doc("time_window") }}'
+
+      - name: expected_poll_count
+        data_type: integer
+        description: '{{ doc("expected_poll_count") }}'
+
+      - name: delay_seconds
+        data_type: integer
+        description: '{{ doc("delay_seconds") }}'
+
+      - name: travel_time_index
+        data_type: double
+        description: '{{ doc("travel_time_index") }}'
+
+    unit_tests:
+      - name: spring_forward_dst
+        description: "2026-03-08 spring-forward: 2am local skipped; PM poll after 6pm local stays on the correct local date."
+        model: int_route_traffic
+        given:
+          - input: ref('stg_route_traffic')
+            rows:
+              # 06:30 UTC = 00:30 CST (pre-spring-forward, still Sunday March 8)
+              - route_name: test-route
+                corridor: test
+                direction: IB
+                origin: A
+                destination: B
+                intermediate: null
+                alternative_index: 0
+                description: test
+                distance_meters: 1000
+                duration_seconds: 600
+                static_duration_seconds: 500
+                encoded_polyline: abc
+                request_time_utc: "2026-03-08 11:30:00+00"
+                schedule_name: weekend_probe
+                run_id: run-1
+                request_date_local: "2026-03-08"
+              # 23:30 UTC = 18:30 CDT (same local day March 8, spring-forward already active at 2am)
+              - route_name: test-route
+                corridor: test
+                direction: IB
+                origin: A
+                destination: B
+                intermediate: null
+                alternative_index: 0
+                description: test
+                distance_meters: 1000
+                duration_seconds: 650
+                static_duration_seconds: 500
+                encoded_polyline: abc
+                request_time_utc: "2026-03-09 00:30:00+00"
+                schedule_name: pm_probe
+                run_id: run-2
+                request_date_local: "2026-03-08"
+          - input: ref('holidays')
+            rows: []
+        expect:
+          rows:
+            - request_time_local: "2026-03-08 05:30:00"
+              time_window: WEEKEND_PROBE
+              request_date_local: "2026-03-08"
+            - request_time_local: "2026-03-08 18:30:00"
+              time_window: PM
+              request_date_local: "2026-03-08"
+
+      - name: fall_back_dst
+        description: "2026-11-01 fall-back: clocks go back 1am CDT→1am CST; PM poll after 6pm local stays on the correct local date."
+        model: int_route_traffic
+        given:
+          - input: ref('stg_route_traffic')
+            rows:
+              # 23:30 UTC on Nov 1 = 17:30 CST (PM window)
+              - route_name: test-route
+                corridor: test
+                direction: IB
+                origin: A
+                destination: B
+                intermediate: null
+                alternative_index: 0
+                description: test
+                distance_meters: 1000
+                duration_seconds: 600
+                static_duration_seconds: 500
+                encoded_polyline: abc
+                request_time_utc: "2026-11-02 00:30:00+00"
+                schedule_name: pm_probe
+                run_id: run-3
+                request_date_local: "2026-11-01"
+          - input: ref('holidays')
+            rows: []
+        expect:
+          rows:
+            - request_time_local: "2026-11-01 18:30:00"
+              time_window: PM
+              request_date_local: "2026-11-01"

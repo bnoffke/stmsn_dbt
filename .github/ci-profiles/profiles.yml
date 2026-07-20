@@ -12,3 +12,4 @@ stmsn_dbt:
       extensions:
         - spatial
         - parquet
+        - icu

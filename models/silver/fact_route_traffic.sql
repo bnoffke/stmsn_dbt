@@ -10,7 +10,7 @@ with historical as (
 live as (
     select *
     from {{ ref('int_route_traffic') }}
-    where dt > (select max(dt) from {{ ref('int_route_traffic_daily') }})
+    where request_date_local > (select max(request_date_local) from {{ ref('int_route_traffic_daily') }})
 )
 
 select * from historical

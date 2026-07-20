@@ -8,8 +8,8 @@ default:
     @just --list
 
 # pull catalog from stmsn-meta, dbt build --target prod (optionally --select), push catalog back
-prod select="":
-    uv run python scripts/entrypoint.py {{select}}
+prod *args="":
+    uv run python scripts/entrypoint.py {{args}}
 
 # build and push stmsn-runner image to Artifact Registry (SHA tag + latest)
 publish-image:
@@ -20,3 +20,12 @@ publish-image:
     SHA=$(git rev-parse --short HEAD)
     gcloud builds submit --tag "${IMAGE}:${SHA}"
     gcloud artifacts docker tags add "${IMAGE}:${SHA}" "${IMAGE}:latest"
+
+# create local dev ducklake catalog (.ducklake/dev.ducklake, data in .ducklake/dev_data/)
+bootstrap-dev:
+    mkdir -p .ducklake
+    uv run duckdb -f scripts/bootstrap_dev.sql
+
+# dbt against the local dev catalog (bronze still reads from GCS via .env creds)
+dev *args="":
+    uv run dbt build --target dev --profiles-dir profiles {{args}}
