@@ -8,8 +8,8 @@ default:
     @just --list
 
 # pull catalog from stmsn-meta, dbt build --target prod (optionally --select), push catalog back
-prod select="":
-    uv run python scripts/entrypoint.py {{select}}
+prod *args="":
+    uv run python scripts/entrypoint.py {{args}}
 
 # build and push stmsn-runner image to Artifact Registry (SHA tag + latest)
 publish-image:
